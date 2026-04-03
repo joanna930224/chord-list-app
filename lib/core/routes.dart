@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:chord_list_app/features/home/presentation/screens/home_screen.dart';
+import 'package:chord_list_app/features/home/presentation/screens/theme_mode_setting_screen.dart';
 import 'package:go_router/go_router.dart';
 
 final List<RouteBase> ROUTES = [
@@ -9,5 +10,10 @@ final List<RouteBase> ROUTES = [
     name: HomeScreen.routeName,
     pageBuilder: (context, state) =>
         const NoTransitionPage(child: HomeScreen()),
+  ),
+  GoRoute(
+    path: '/settings/theme-mode',
+    name: ThemeModeSettingScreen.routeName,
+    builder: (_, _) => const ThemeModeSettingScreen(),
   ),
 ];

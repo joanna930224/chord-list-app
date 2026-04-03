@@ -15,6 +15,10 @@ dependencies:
   flutter_riverpod: ^3.3.1
   hooks_riverpod: ^3.3.1
   flutter_hooks: ^0.21.3+1
+  shared_preferences: ^2.5.5
+  flutter_svg: ^2.2.4
+  lottie: ^3.3.2
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
   flutter_test:
@@ -24,3 +28,18 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/icons/
+
+  fonts:
+    - family: Pretendard
+      fonts:
+        - asset: assets/fonts/Pretendard/Pretendard-Regular.otf
+          weight: 400
+        - asset: assets/fonts/Pretendard/Pretendard-Medium.otf
+          weight: 500
+        - asset: assets/fonts/Pretendard/Pretendard-SemiBold.otf
+          weight: 600
+        - asset: assets/fonts/Pretendard/Pretendard-Bold.otf
+          weight: 700
