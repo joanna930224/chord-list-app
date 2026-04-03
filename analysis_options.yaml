@@ -1,28 +1,48 @@
-# This file configures the analyzer, which statically analyzes Dart code to
-# check for errors, warnings, and lints.
-#
-# The issues identified by the analyzer are surfaced in the UI of Dart-enabled
-# IDEs (https://dart.dev/tools#ides-and-editors). The analyzer can also be
-# invoked from the command line by running `flutter analyze`.
-
-# The following line activates a set of recommended lints for Flutter apps,
-# packages, and plugins designed to encourage good coding practices.
+# Flutter 린팅 규칙을 포함합니다 (기본 권장 규칙들)
 include: package:flutter_lints/flutter.yaml
 
-linter:
-  # The lint rules applied to this project can be customized in the
-  # section below to disable rules from the `package:flutter_lints/flutter.yaml`
-  # included above or to enable additional rules. A list of all available lints
-  # and their documentation is published at https://dart.dev/lints.
-  #
-  # Instead of disabling a lint rule for the entire project in the
-  # section below, it can also be suppressed for a single line of code
-  # or a specific dart file by using the `// ignore: name_of_lint` and
-  # `// ignore_for_file: name_of_lint` syntax on the line or in the file
-  # producing the lint.
-  rules:
-    # avoid_print: false  # Uncomment to disable the `avoid_print` rule
-    # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
+analyzer:
+  # 빌드 파일과 자동 생성 파일을 분석에서 제외합니다
+  exclude: [build/**, lib/**.g.dart]
+  plugins:
+    # 커스텀 린트 플러그인을 활성화합니다
+    - custom_lint
+  language:
+    # 엄격한 타입 캐스팅을 적용합니다 (런타임 에러 방지)
+    strict-casts: true
+    # 엄격한 타입 추론을 적용합니다 (타입 안전성 향상)
+    strict-inference: true
+    # 엄격한 raw 타입 검사를 적용합니다 (제네릭 타입 명시 강제)
+    strict-raw-types: true
+  errors:
+    # 잘못된 어노테이션 대상 경고를 무시합니다
+    invalid_annotation_target: ignore
+    # nullable 타입에서 함수가 null을 반환할 수 있는 경고를 무시합니다
+    body_might_complete_normally_nullable: ignore
 
-# Additional information about this file can be found at
-# https://dart.dev/guides/language/analysis-options
+linter:
+  rules:
+    # 문자열에 작은따옴표 사용을 강제합니다 (일관성)
+    prefer_single_quotes: true
+    # 패키지 import 시 package: 형식 사용을 강제합니다 (명확성)
+    always_use_package_imports: true
+    # getter 없는 setter 사용을 금지합니다 (캡슐화)
+    avoid_setters_without_getters: true
+    # for-each 루프에서 final 키워드 사용을 권장합니다 (불변성)
+    prefer_final_in_for_each: true
+    # null 대신 void 사용을 권장합니다 (의미 명확성)
+    prefer_void_to_null: true
+    # 불필요한 괄호 사용을 금지합니다 (코드 정리)
+    unnecessary_parenthesis: true
+    # 파일 끝에 개행 문자를 강제합니다 (표준 관례)
+    eol_at_end_of_file: true
+    # Flutter 스타일 TODO 주석을 강제합니다 (일관성)
+    flutter_style_todos: true
+    # 후행 쉼표 사용을 강제합니다 (코드 포매팅)
+    require_trailing_commas: true
+    # 함수 반환 타입을 명시적으로 선언하도록 강제합니다 (가독성)
+    always_declare_return_types: true
+    # 비동기 함수 호출 시 await 누락을 경고합니다 (버그 방지)
+    unawaited_futures: true
+    # import 문의 정렬을 강제합니다 (코드 정리)
+    directives_ordering: true
