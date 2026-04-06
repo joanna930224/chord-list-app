@@ -1,4 +1,4 @@
-package com.example.chord_list_app
+package com.joanna.chordmap
 
 import io.flutter.embedding.android.FlutterActivity
 
