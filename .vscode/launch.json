@@ -5,18 +5,18 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "ChordMap",
+      "name": "ChordBox",
       "request": "launch",
       "type": "dart"
     },
     {
-      "name": "ChordMap (profile mode)",
+      "name": "ChordBox (profile mode)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "profile"
     },
     {
-      "name": "ChordMap (release mode)",
+      "name": "ChordBox (release mode)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "release"

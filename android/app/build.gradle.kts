@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.joanna.chordmap"
+    namespace = "com.joanna.chordbox"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -21,14 +21,14 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.joanna.chordmap"
+        applicationId = "com.joanna.chordbox"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
-        resValue("string", "app_name", "ChordMap")
+        resValue("string", "app_name", "ChordBox")
     }
 
     buildTypes {
