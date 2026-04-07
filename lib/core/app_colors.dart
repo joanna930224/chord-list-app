@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   AppColors._();
-  static const brand = Color(0XFF5A4FCF);
+  static const brandPurple = Color(0XFF5A4FCF);
+  static const brandDeepPurple = Color(0XFF3E058D);
 
   static const grey950 = Color(0XFF202023);
   static const grey900 = Color(0XFF3A3A3F);

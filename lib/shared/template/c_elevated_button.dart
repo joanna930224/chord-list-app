@@ -34,12 +34,12 @@ class CElevatedButton extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: isEnabled ? onPressed : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: backgroundColor ?? AppColors.brand,
+                  backgroundColor: backgroundColor ?? AppColors.brandPurple,
                   foregroundColor: Colors.white,
                   disabledBackgroundColor: context.colorScheme.tertiary,
                   disabledForegroundColor: context.colorScheme.onTertiary,
                   overlayColor: Color.lerp(
-                    backgroundColor ?? AppColors.brand,
+                    backgroundColor ?? AppColors.brandPurple,
                     Colors.black,
                     0.5,
                   ),

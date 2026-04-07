@@ -81,7 +81,7 @@ class AppTheme {
       thumbColor: WidgetStateProperty.all(Colors.white),
       trackColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
-          return AppColors.brand;
+          return AppColors.brandPurple;
         }
         return AppColors.grey100;
       }),
@@ -170,7 +170,7 @@ class AppTheme {
       thumbColor: WidgetStateProperty.all(Colors.white),
       trackColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
-          return AppColors.brand;
+          return AppColors.brandPurple;
         }
         return AppColors.grey600;
       }),

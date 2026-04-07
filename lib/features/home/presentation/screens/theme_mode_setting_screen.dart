@@ -66,7 +66,7 @@ class _ThemeModeButton extends StatelessWidget {
               'assets/icons/check_white.svg',
               width: 24,
               height: 24,
-              color: AppColors.brand,
+              color: AppColors.brandPurple,
             )
           : SizedBox.shrink(),
       title: title,
