@@ -1,7 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:chord_list_app/features/home/presentation/screens/home_screen.dart';
-import 'package:chord_list_app/features/home/presentation/screens/theme_mode_setting_screen.dart';
+import 'package:chord_list_app/features/my/presentation/screens/theme_mode_setting_screen.dart';
 import 'package:chord_list_app/features/splash/presentation/splash_screen.dart';
 import 'package:go_router/go_router.dart';
 

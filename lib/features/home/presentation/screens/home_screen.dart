@@ -1,6 +1,7 @@
-import 'package:chord_list_app/features/home/presentation/screens/theme_mode_setting_screen.dart';
+import 'package:chord_list_app/features/box/presentation/box_screen.dart';
+import 'package:chord_list_app/features/my/presentation/screens/my_screen.dart';
+import 'package:chord_list_app/features/search/presentation/search_screen.dart';
 import 'package:chord_list_app/shared/exports.dart';
-import 'package:chord_list_app/shared/template/c_list_tile.dart';
 
 class HomeScreen extends StatelessWidget {
   static String get routeName => 'ab2def8e-780f-4f5a-94f4-7d3dfc64f47f';
@@ -8,17 +9,57 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return const _HomeView();
+  }
+}
+
+class _HomeView extends HookWidget {
+  const _HomeView();
+
+  @override
+  Widget build(BuildContext context) {
+    final currentIndex = useState(0);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.brandPurple,
         title: Text('HOME'),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            CListTile.arrow(
-              title: '화면 테마',
-              onTap: () => context.pushNamed(ThemeModeSettingScreen.routeName),
+      body: IndexedStack(
+        index: currentIndex.value,
+        children: const [BoxScreen(), SearchScreen(), MyScreen()],
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color:
+              Theme.of(context).bottomNavigationBarTheme.backgroundColor ??
+              Theme.of(context).scaffoldBackgroundColor,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.1),
+              blurRadius: 10,
+              offset: const Offset(0, -2),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          currentIndex: currentIndex.value,
+          onTap: (index) => currentIndex.value = index,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.inventory_2_outlined),
+              activeIcon: Icon(Icons.inventory_2),
+              label: 'Box',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search_outlined),
+              activeIcon: Icon(Icons.search),
+              label: 'Search',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_outline),
+              activeIcon: Icon(Icons.person),
+              label: 'MY',
             ),
           ],
         ),
