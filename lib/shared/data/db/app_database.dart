@@ -1,3 +1,5 @@
+import 'package:chord_list_app/shared/data/db/dao/chord_dao.dart';
+import 'package:chord_list_app/shared/data/db/dao/chord_position_dao.dart';
 import 'package:chord_list_app/shared/data/db/tables/chord_positions_table.dart';
 import 'package:chord_list_app/shared/data/db/tables/chords_table.dart';
 import 'package:drift/drift.dart';
@@ -5,7 +7,7 @@ import 'package:drift_flutter/drift_flutter.dart';
 
 part 'app_database.g.dart';
 
-@DriftDatabase(tables: [Chords, ChordPositions])
+@DriftDatabase(tables: [Chords, ChordPositions], daos: [ChordDao, ChordPositionDao])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(driftDatabase(name: 'chord_box.db'));
 
