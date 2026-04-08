@@ -1,4 +1,4 @@
-import 'package:chord_list_app/features/box/presentation/box_screen.dart';
+import 'package:chord_list_app/features/box/presentation/screens/box_screen.dart';
 import 'package:chord_list_app/features/my/presentation/screens/my_screen.dart';
 import 'package:chord_list_app/features/search/presentation/search_screen.dart';
 import 'package:chord_list_app/shared/exports.dart';
@@ -21,10 +21,6 @@ class _HomeView extends HookWidget {
     final currentIndex = useState(0);
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.brandPurple,
-        title: Text('HOME'),
-      ),
       body: IndexedStack(
         index: currentIndex.value,
         children: const [BoxScreen(), SearchScreen(), MyScreen()],

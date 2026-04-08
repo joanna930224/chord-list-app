@@ -8,15 +8,14 @@ class MyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          CListTile.arrow(
-            title: '화면 테마',
-            onTap: () => context.pushNamed(ThemeModeSettingScreen.routeName),
-          ),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CListTile.arrow(
+          title: '화면 테마',
+          onTap: () => context.pushNamed(ThemeModeSettingScreen.routeName),
+        ),
+      ],
     );
   }
 }
