@@ -19,6 +19,9 @@ dependencies:
   flutter_svg: ^2.2.4
   lottie: ^3.3.2
   cached_network_image: ^3.4.1
+  drift: ^2.31.0
+  drift_flutter: ^0.2.8
+  path_provider: ^2.1.5
 
 dev_dependencies:
   flutter_test:
@@ -26,6 +29,8 @@ dev_dependencies:
 
   flutter_lints: ^6.0.0
   flutter_launcher_icons: ^0.14.4
+  drift_dev: ^2.31.0
+  build_runner: ^2.13.1
 
 flutter:
   uses-material-design: true
