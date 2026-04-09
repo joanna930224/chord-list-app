@@ -1,6 +1,5 @@
 import 'package:chord_list_app/core/routes.dart';
 import 'package:chord_list_app/shared/exports.dart';
-import 'package:go_router/go_router.dart';
 
 final GlobalKey<NavigatorState> navigatorState = GlobalKey<NavigatorState>();
 

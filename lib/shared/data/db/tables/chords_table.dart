@@ -6,6 +6,7 @@ class Chords extends Table {
   TextColumn get fullName => text()();
   TextColumn get root => text()();
   TextColumn get type => text()();
+  TextColumn get bass => text().nullable()();
   TextColumn get difficulty => text()();
   BoolColumn get isBarreChord => boolean().withDefault(const Constant(false))();
   TextColumn get aliases => text().nullable()();
