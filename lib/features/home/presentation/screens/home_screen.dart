@@ -1,4 +1,5 @@
 import 'package:chord_list_app/features/box/presentation/screens/box_screen.dart';
+import 'package:chord_list_app/features/library/presentation/screens/library_screen.dart';
 import 'package:chord_list_app/features/my/presentation/screens/my_screen.dart';
 import 'package:chord_list_app/features/search/presentation/search_screen.dart';
 import 'package:chord_list_app/shared/exports.dart';
@@ -23,7 +24,12 @@ class _HomeView extends HookWidget {
     return Scaffold(
       body: IndexedStack(
         index: currentIndex.value,
-        children: const [BoxScreen(), SearchScreen(), MyScreen()],
+        children: const [
+          BoxScreen(),
+          LibraryScreen(),
+          SearchScreen(),
+          MyScreen(),
+        ],
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
@@ -41,11 +47,17 @@ class _HomeView extends HookWidget {
         child: BottomNavigationBar(
           currentIndex: currentIndex.value,
           onTap: (index) => currentIndex.value = index,
+          type: BottomNavigationBarType.fixed,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.inventory_2_outlined),
               activeIcon: Icon(Icons.inventory_2),
               label: 'Box',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.my_library_books_outlined),
+              activeIcon: Icon(Icons.library_books),
+              label: 'Library',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.search_outlined),
