@@ -25,6 +25,7 @@ dependencies:
   guitar_chord_library: ^0.0.4
   logger: ^2.7.0
   flutter_guitar_chord: ^0.0.3
+  copy_with_extension: ^14.0.0
 
 dev_dependencies:
   flutter_test:
@@ -34,6 +35,7 @@ dev_dependencies:
   flutter_launcher_icons: ^0.14.4
   drift_dev: ^2.31.0
   build_runner: ^2.13.1
+  copy_with_extension_gen: ^14.0.0
 
 flutter:
   uses-material-design: true
