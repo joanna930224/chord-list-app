@@ -151,17 +151,17 @@ ChordDifficulty _difficulty(ChordType type, bool isBarreChord) {
     ChordType.seven,
     ChordType.maj7,
     ChordType.m7,
-    ChordType.six,
-    ChordType.mSix,
-    ChordType.dim,
-    ChordType.aug,
+    ChordType.sevenSusFour,
+    ChordType.sus2sus4,
     ChordType.addNine,
     ChordType.mAddNine,
+    ChordType.dim,
+    ChordType.aug,
     ChordType.nine,
-    ChordType.sevenSusFour,
+    ChordType.six,
+    ChordType.mSix,
     ChordType.sixNine,
     ChordType.mSixNine,
-    ChordType.sus2sus4,
   };
 
   if (beginner.contains(type)) return ChordDifficulty.beginner;
