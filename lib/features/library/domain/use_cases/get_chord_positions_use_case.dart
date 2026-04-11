@@ -1,5 +1,7 @@
 import 'package:chord_list_app/features/library/domain/models/chord_with_positions_model.dart';
 import 'package:chord_list_app/shared/data/db/app_database.dart';
+import 'package:chord_list_app/shared/models/chord_root.dart';
+import 'package:chord_list_app/shared/models/chord_type.dart';
 
 class GetChordPositionsUseCase {
   const GetChordPositionsUseCase(this._db);
@@ -8,11 +10,11 @@ class GetChordPositionsUseCase {
 
   /// root + type으로 Chord 목록을 조회하고 각 운지법을 묶어 반환
   Future<List<ChordWithPositions>> call({
-    required String root,
-    required String type,
+    required ChordRoot root,
+    required ChordType type,
   }) async {
-    final chords = await _db.chordDao.findByRoot(root);
-    final filtered = chords.where((c) => c.type == type).toList();
+    final chords = await _db.chordDao.findByRoot(root.dbKey);
+    final filtered = chords.where((c) => c.type == type.dbKey).toList();
 
     final result = <ChordWithPositions>[];
     for (final chord in filtered) {
