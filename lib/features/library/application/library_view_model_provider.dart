@@ -43,7 +43,9 @@ class LibraryViewModelNotifier extends AsyncNotifier<LibraryState> {
     state = await AsyncValue.guard(() async {
       final current = await future;
       final types = await _getChordTypes(root);
-      final newType = types.isNotEmpty ? types.first : current.selectedType;
+      final newType = types.contains(current.selectedType)
+          ? current.selectedType
+          : (types.isNotEmpty ? types.first : current.selectedType);
       final chordPositions = await _getChordPositions(
         root: root,
         type: newType,
