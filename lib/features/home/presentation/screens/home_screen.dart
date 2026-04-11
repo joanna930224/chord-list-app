@@ -3,6 +3,7 @@ import 'package:chord_list_app/features/library/presentation/screens/library_scr
 import 'package:chord_list_app/features/my/presentation/screens/my_screen.dart';
 import 'package:chord_list_app/features/search/presentation/search_screen.dart';
 import 'package:chord_list_app/shared/exports.dart';
+import 'package:chord_list_app/shared/providers/haptic_provider.dart';
 
 class HomeScreen extends StatelessWidget {
   static String get routeName => 'ab2def8e-780f-4f5a-94f4-7d3dfc64f47f';
@@ -14,12 +15,13 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class _HomeView extends HookWidget {
+class _HomeView extends HookConsumerWidget {
   const _HomeView();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = useState(0);
+    final hapticService = ref.read(hapticProvider);
 
     return Scaffold(
       body: IndexedStack(
@@ -46,7 +48,10 @@ class _HomeView extends HookWidget {
         ),
         child: BottomNavigationBar(
           currentIndex: currentIndex.value,
-          onTap: (index) => currentIndex.value = index,
+          onTap: (index) {
+            hapticService.medium();
+            currentIndex.value = index;
+          },
           type: BottomNavigationBarType.fixed,
           items: const [
             BottomNavigationBarItem(
