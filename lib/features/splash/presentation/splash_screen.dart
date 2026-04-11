@@ -62,7 +62,7 @@ class _Splash extends HookConsumerWidget {
             Stack(
               alignment: AlignmentDirectional.center,
               children: [
-                _BoxAnimation(),
+                const _BoxAnimation(),
                 AnimatedOpacity(
                   opacity: isLogo.value ? 1.0 : 0.0,
                   duration: const Duration(milliseconds: 1000),
@@ -85,32 +85,20 @@ class _Splash extends HookConsumerWidget {
   }
 }
 
-class _BoxAnimation extends StatefulWidget {
-  @override
-  _BoxAnimationState createState() => _BoxAnimationState();
-}
-
-class _BoxAnimationState extends State<_BoxAnimation>
-    with SingleTickerProviderStateMixin {
-  late AnimationController controller;
-
-  @override
-  void initState() {
-    super.initState();
-
-    controller = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 800),
-    )..forward();
-  }
+class _BoxAnimation extends HookWidget {
+  const _BoxAnimation();
 
   @override
   Widget build(BuildContext context) {
+    final controller = useAnimationController(
+      duration: const Duration(milliseconds: 800),
+    )..forward();
+
     return AnimatedBuilder(
       animation: controller,
       builder: (_, _) {
         return CustomPaint(
-          size: Size(200, 200),
+          size: const Size(200, 200),
           painter: BoxPainter(controller.value),
         );
       },
