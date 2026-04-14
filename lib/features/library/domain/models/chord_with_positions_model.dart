@@ -1,7 +1,7 @@
 import 'package:chord_list_app/shared/data/db/app_database.dart';
 
-class ChordWithPositions {
-  const ChordWithPositions({
+class ChordWithPositionsModel {
+  const ChordWithPositionsModel({
     required this.chord,
     required this.positions,
   });

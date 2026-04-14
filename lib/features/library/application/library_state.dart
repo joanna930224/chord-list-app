@@ -17,5 +17,5 @@ class LibraryState {
   final ChordRoot selectedRoot;
   final ChordType selectedType;
   final List<ChordType> types;
-  final List<ChordWithPositions> chordPositions;
+  final List<ChordWithPositionsModel> chordPositions;
 }
