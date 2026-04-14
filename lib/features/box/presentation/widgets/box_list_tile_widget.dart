@@ -4,17 +4,10 @@ import 'package:chord_list_app/shared/template/c_scale_button.dart';
 import 'package:intl/intl.dart';
 
 class BoxListTileWidget extends StatelessWidget {
-  const BoxListTileWidget({
-    super.key,
-    required this.box,
-    required this.chordNames,
-    required this.onTap,
-  });
+  const BoxListTileWidget({super.key, required this.box, required this.onTap});
 
   final ChordBoxModel box;
 
-  /// 저장된 코드명 목록 (e.g. ['G', 'E', 'Am'])
-  final List<String> chordNames;
   final VoidCallback onTap;
 
   @override
@@ -28,7 +21,6 @@ class BoxListTileWidget extends StatelessWidget {
 
         child: Row(
           children: [
-            // 썸네일
             Container(
               width: 54,
               height: 54,
@@ -43,19 +35,16 @@ class BoxListTileWidget extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 12),
-            // 텍스트 영역
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // 제목
                   Text(
                     box.title,
                     style: context.textTheme.semiBold14,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  // 설명 (있을 때만)
                   if (box.description != null &&
                       box.description!.isNotEmpty) ...[
                     const SizedBox(height: 2),
@@ -69,7 +58,6 @@ class BoxListTileWidget extends StatelessWidget {
                     ),
                   ],
                   const SizedBox(height: 4),
-                  // 생성일 + 코드 내역
                   Row(
                     children: [
                       Text(
@@ -80,24 +68,6 @@ class BoxListTileWidget extends StatelessWidget {
                           color: colorScheme.outline,
                         ),
                       ),
-                      if (chordNames.isNotEmpty) ...[
-                        Text(
-                          '  ·  ',
-                          style: context.textTheme.regular12.copyWith(
-                            color: colorScheme.outline,
-                          ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            chordNames.join(', '),
-                            style: context.textTheme.regular12.copyWith(
-                              color: colorScheme.outline,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
                     ],
                   ),
                 ],

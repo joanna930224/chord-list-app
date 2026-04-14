@@ -33,7 +33,6 @@ class BoxScreen extends HookConsumerWidget {
                       final box = state.boxes[index];
                       return BoxListTileWidget(
                         box: box,
-                        chordNames: const [], // Phase 3: 코드명은 추후 연동
                         onTap: () => context.pushNamed(
                           BoxDetailScreen.routeName,
                           pathParameters: {'id': box.id.toString()},
