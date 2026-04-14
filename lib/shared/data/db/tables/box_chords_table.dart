@@ -4,8 +4,7 @@ import 'package:drift/drift.dart';
 
 class BoxChords extends Table {
   IntColumn get id => integer().autoIncrement()();
-  IntColumn get boxId => integer().references(Boxes, #id)();
-  IntColumn get chordPositionId =>
-      integer().references(ChordPositions, #id)();
+  IntColumn get boxId => integer().references(ChordBoxes, #id)();
+  IntColumn get chordPositionId => integer().references(ChordPositions, #id)();
   DateTimeColumn get savedAt => dateTime()();
 }

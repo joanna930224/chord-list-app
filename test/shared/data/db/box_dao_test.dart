@@ -15,11 +15,11 @@ void main() {
     await db.close();
   });
 
-  BoxesCompanion _companion({
+  ChordBoxesCompanion companion({
     String title = 'Test Box',
     String? description,
   }) =>
-      BoxesCompanion.insert(
+      ChordBoxesCompanion.insert(
         title: title,
         description: Value(description),
         createdAt: DateTime(2026, 1, 1),
@@ -27,7 +27,7 @@ void main() {
 
   group('BoxDao - insert / findById', () {
     test('insertBox: 삽입 후 findById로 조회되어야 한다', () async {
-      final id = await db.boxDao.insertBox(_companion(title: 'My Box'));
+      final id = await db.boxDao.insertBox(companion(title: 'My Box'));
       final found = await db.boxDao.findById(id);
       expect(found, isNotNull);
       expect(found!.title, equals('My Box'));
@@ -39,7 +39,7 @@ void main() {
     });
 
     test('insertBox: description이 null이어도 삽입되어야 한다', () async {
-      final id = await db.boxDao.insertBox(_companion(description: null));
+      final id = await db.boxDao.insertBox(companion(description: null));
       final found = await db.boxDao.findById(id);
       expect(found!.description, isNull);
     });
@@ -48,14 +48,14 @@ void main() {
   group('BoxDao - watchAll 정렬', () {
     setUp(() async {
       await db.boxDao.insertBox(
-        BoxesCompanion.insert(
+        ChordBoxesCompanion.insert(
           title: 'B Box',
           description: const Value(null),
           createdAt: DateTime(2026, 1, 1),
         ),
       );
       await db.boxDao.insertBox(
-        BoxesCompanion.insert(
+        ChordBoxesCompanion.insert(
           title: 'A Box',
           description: const Value(null),
           createdAt: DateTime(2026, 1, 2),
@@ -86,7 +86,7 @@ void main() {
 
   group('BoxDao - deleteById', () {
     test('deleteById: 삭제 후 findById는 null을 반환해야 한다', () async {
-      final id = await db.boxDao.insertBox(_companion());
+      final id = await db.boxDao.insertBox(companion());
       await db.boxDao.deleteById(id);
       final found = await db.boxDao.findById(id);
       expect(found, isNull);

@@ -6,13 +6,13 @@ part 'box_dao.g.dart';
 
 enum BoxSortType { createdAtDesc, createdAtAsc, titleAsc, titleDesc }
 
-@DriftAccessor(tables: [Boxes])
+@DriftAccessor(tables: [ChordBoxes])
 class BoxDao extends DatabaseAccessor<AppDatabase> with _$BoxDaoMixin {
   BoxDao(super.db);
 
   /// 전체 Box 목록 조회 (정렬 조건 포함, Stream)
   Stream<List<ChordBox>> watchAll(BoxSortType sortType) {
-    return (select(boxes)..orderBy([
+    return (select(chordBoxes)..orderBy([
           (t) => switch (sortType) {
             BoxSortType.createdAtDesc => OrderingTerm.desc(t.createdAt),
             BoxSortType.createdAtAsc => OrderingTerm.asc(t.createdAt),
@@ -25,13 +25,13 @@ class BoxDao extends DatabaseAccessor<AppDatabase> with _$BoxDaoMixin {
 
   /// 단일 Box 조회
   Future<ChordBox?> findById(int id) =>
-      (select(boxes)..where((t) => t.id.equals(id))).getSingleOrNull();
+      (select(chordBoxes)..where((t) => t.id.equals(id))).getSingleOrNull();
 
   /// Box 생성
-  Future<int> insertBox(BoxesCompanion companion) =>
-      into(boxes).insert(companion);
+  Future<int> insertBox(ChordBoxesCompanion companion) =>
+      into(chordBoxes).insert(companion);
 
   /// Box 삭제
   Future<int> deleteById(int id) =>
-      (delete(boxes)..where((t) => t.id.equals(id))).go();
+      (delete(chordBoxes)..where((t) => t.id.equals(id))).go();
 }

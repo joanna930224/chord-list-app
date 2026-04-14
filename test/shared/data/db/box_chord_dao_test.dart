@@ -12,7 +12,7 @@ void main() {
     await db.chordDao.findAll(); // onCreate 트리거 (seed 포함)
 
     boxId = await db.boxDao.insertBox(
-      BoxesCompanion.insert(
+      ChordBoxesCompanion.insert(
         title: 'Test Box',
         description: const Value(null),
         createdAt: DateTime(2026, 1, 1),
@@ -28,7 +28,7 @@ void main() {
     await db.close();
   });
 
-  BoxChordsCompanion _companion({int? boxIdOverride, int? positionIdOverride}) =>
+  BoxChordsCompanion companion({int? boxIdOverride, int? positionIdOverride}) =>
       BoxChordsCompanion.insert(
         boxId: boxIdOverride ?? boxId,
         chordPositionId: positionIdOverride ?? chordPositionId,
@@ -37,7 +37,7 @@ void main() {
 
   group('BoxChordDao - insertBoxChord / watchByBoxId', () {
     test('insertBoxChord: 삽입 후 watchByBoxId로 조회되어야 한다', () async {
-      await db.boxChordDao.insertBoxChord(_companion());
+      await db.boxChordDao.insertBoxChord(companion());
       final list = await db.boxChordDao.watchByBoxId(boxId).first;
       expect(list, isNotEmpty);
       expect(list.first.chordPositionId, equals(chordPositionId));
@@ -45,14 +45,14 @@ void main() {
 
     test('watchByBoxId: 다른 boxId의 데이터는 포함되지 않아야 한다', () async {
       final otherBoxId = await db.boxDao.insertBox(
-        BoxesCompanion.insert(
+        ChordBoxesCompanion.insert(
           title: 'Other Box',
           description: const Value(null),
           createdAt: DateTime(2026, 1, 2),
         ),
       );
 
-      await db.boxChordDao.insertBoxChord(_companion(boxIdOverride: otherBoxId));
+      await db.boxChordDao.insertBoxChord(companion(boxIdOverride: otherBoxId));
 
       final list = await db.boxChordDao.watchByBoxId(boxId).first;
       expect(list, isEmpty);
@@ -61,7 +61,7 @@ void main() {
 
   group('BoxChordDao - existsInBox', () {
     test('existsInBox: 저장된 항목은 true를 반환해야 한다', () async {
-      await db.boxChordDao.insertBoxChord(_companion());
+      await db.boxChordDao.insertBoxChord(companion());
       final exists = await db.boxChordDao.existsInBox(boxId, chordPositionId);
       expect(exists, isTrue);
     });
@@ -74,7 +74,7 @@ void main() {
 
   group('BoxChordDao - deleteBoxChord', () {
     test('deleteBoxChord: 삭제 후 watchByBoxId 목록에서 제거되어야 한다', () async {
-      await db.boxChordDao.insertBoxChord(_companion());
+      await db.boxChordDao.insertBoxChord(companion());
       await db.boxChordDao.deleteBoxChord(boxId, chordPositionId);
       final list = await db.boxChordDao.watchByBoxId(boxId).first;
       expect(list, isEmpty);

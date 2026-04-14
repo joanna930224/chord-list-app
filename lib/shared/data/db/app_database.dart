@@ -15,7 +15,7 @@ import 'package:flutter/foundation.dart';
 part 'app_database.g.dart';
 
 @DriftDatabase(
-  tables: [Chords, ChordPositions, Boxes, BoxChords],
+  tables: [Chords, ChordPositions, ChordBoxes, BoxChords],
   daos: [ChordDao, ChordPositionDao, BoxDao, BoxChordDao],
 )
 class AppDatabase extends _$AppDatabase {
