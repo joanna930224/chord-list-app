@@ -49,7 +49,7 @@ class CElevatedButton extends StatelessWidget {
                 ),
                 child: Text(
                   title,
-                  style: context.textTheme.semiBold16.copyWith(
+                  style: context.textTheme.semiBold14.copyWith(
                     color: textColor,
                   ),
                 ),

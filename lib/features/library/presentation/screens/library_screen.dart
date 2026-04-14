@@ -1,14 +1,20 @@
 import 'package:chord_list_app/features/library/application/library_state.dart';
 import 'package:chord_list_app/features/library/application/library_view_model_provider.dart';
+import 'package:chord_list_app/features/library/domain/models/save_chord_action_type.dart';
+import 'package:chord_list_app/features/library/presentation/widgets/chord_bottom_sheet_widget.dart';
 import 'package:chord_list_app/features/library/presentation/widgets/chord_notation_toggle.dart';
 import 'package:chord_list_app/features/library/presentation/widgets/chord_position_card_widget.dart';
+import 'package:chord_list_app/features/library/presentation/widgets/new_box_dialog.dart';
 import 'package:chord_list_app/features/library/presentation/widgets/root_selector_widget.dart';
+import 'package:chord_list_app/features/library/presentation/widgets/select_box_bottom_sheet_widget.dart';
 import 'package:chord_list_app/features/library/presentation/widgets/type_selector_widget.dart';
 import 'package:chord_list_app/shared/data/db/app_database.dart';
 import 'package:chord_list_app/shared/exports.dart';
 import 'package:chord_list_app/shared/models/chord_root.dart';
 import 'package:chord_list_app/shared/models/chord_type.dart';
 import 'package:chord_list_app/shared/providers/notation_style_provider.dart';
+import 'package:chord_list_app/shared/template/c_bottom_sheet.dart';
+import 'package:chord_list_app/shared/template/c_toast.dart';
 
 class LibraryScreen extends ConsumerWidget {
   const LibraryScreen({super.key});
@@ -73,7 +79,13 @@ class _LibraryBody extends StatelessWidget {
               children: [
                 SizedBox(width: 84, child: const TypeSelectorWidget()),
                 VerticalDivider(width: 1),
-                Expanded(child: _ChordPositionGrid(cards: cards)),
+                Expanded(
+                  child: _ChordPositionGrid(
+                    cards: cards,
+                    onCardTap: (chord, position) =>
+                        _handleCardTap(context, chord, position),
+                  ),
+                ),
               ],
             ),
           ),
@@ -81,12 +93,80 @@ class _LibraryBody extends StatelessWidget {
       ),
     );
   }
+
+  Future<void> _handleCardTap(
+    BuildContext context,
+    Chord chord,
+    ChordPosition position,
+  ) async {
+    final action = await showCBottomSheet<SaveChordActionType>(
+      context: context,
+      builder: (_) => ChordBottomSheetWidget(chord: chord, position: position),
+    );
+    if (!context.mounted) return;
+
+    switch (action) {
+      case SaveChordActionType.createNew:
+        _showNewBoxDialog(context, chord, position);
+      case SaveChordActionType.addToExisting:
+        _showSelectBoxSheet(context, chord, position);
+      case null:
+        break;
+    }
+  }
+
+  void _showSelectBoxSheet(
+    BuildContext context,
+    Chord chord,
+    ChordPosition position,
+  ) {
+    showCBottomSheet<void>(
+      context: context,
+      builder: (_) => SelectBoxBottomSheetWidget(
+        chordPositionId: position.id,
+        onSuccess: (title) {
+          if (context.mounted) CToast.show(context, '$title에 저장되었습니다.');
+        },
+        onError: () {
+          if (context.mounted) CToast.show(context, '오류가 발생하였습니다.');
+        },
+        onCreateNew: () {
+          if (context.mounted) _showNewBoxDialog(context, chord, position);
+        },
+      ),
+    );
+  }
+
+  void _showNewBoxDialog(
+    BuildContext context,
+    Chord chord,
+    ChordPosition position,
+  ) {
+    showDialog<void>(
+      context: context,
+      builder: (dialogCtx) => NewBoxDialog(
+        chordPositionId: position.id,
+        onSuccess: (title) {
+          Navigator.pop(dialogCtx);
+          if (context.mounted) {
+            CToast.show(context, '$title에 저장되었습니다.');
+          }
+        },
+        onError: () {
+          if (context.mounted) {
+            CToast.show(context, '오류가 발생하였습니다.');
+          }
+        },
+      ),
+    );
+  }
 }
 
 class _ChordPositionGrid extends StatelessWidget {
-  const _ChordPositionGrid({required this.cards});
+  const _ChordPositionGrid({required this.cards, required this.onCardTap});
 
   final List<({Chord chord, ChordPosition position})> cards;
+  final void Function(Chord, ChordPosition) onCardTap;
 
   @override
   Widget build(BuildContext context) {
@@ -115,17 +195,9 @@ class _ChordPositionGrid extends StatelessWidget {
         return ChordPositionCardWidget(
           chord: item.chord,
           position: item.position,
-          onTap: () => _showBottomSheet(context),
+          onTap: () => onCardTap(item.chord, item.position),
         );
       },
-    );
-  }
-
-  void _showBottomSheet(BuildContext context) {
-    showModalBottomSheet<void>(
-      context: context,
-      builder: (_) =>
-          Container(height: 300, color: context.colorScheme.surface),
     );
   }
 }
