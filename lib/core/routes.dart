@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:chord_list_app/features/box/presentation/screens/box_detail_screen.dart';
 import 'package:chord_list_app/features/home/presentation/screens/home_screen.dart';
 import 'package:chord_list_app/features/my/presentation/screens/theme_mode_setting_screen.dart';
 import 'package:chord_list_app/features/splash/presentation/splash_screen.dart';
@@ -22,5 +23,11 @@ final List<RouteBase> ROUTES = [
     path: '/settings/theme-mode',
     name: ThemeModeSettingScreen.routeName,
     builder: (_, _) => const ThemeModeSettingScreen(),
+  ),
+  GoRoute(
+    path: '/box/:id',
+    name: BoxDetailScreen.routeName,
+    builder: (context, state) =>
+        BoxDetailScreen(boxId: int.parse(state.pathParameters['id']!)),
   ),
 ];

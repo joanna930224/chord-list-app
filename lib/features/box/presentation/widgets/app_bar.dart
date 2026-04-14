@@ -1,3 +1,4 @@
+import 'package:chord_list_app/features/box/presentation/widgets/box_sort_button_widget.dart';
 import 'package:chord_list_app/shared/exports.dart';
 import 'package:chord_list_app/shared/template/c_image.dart';
 
@@ -50,6 +51,10 @@ class BoxAppBar extends HookConsumerWidget {
           color: context.colorScheme.primary,
         ),
       ),
+      actions: const [
+        BoxSortButtonWidget(),
+        SizedBox(width: 8),
+      ],
       centerTitle: false,
       automaticallyImplyLeading: false,
     );
