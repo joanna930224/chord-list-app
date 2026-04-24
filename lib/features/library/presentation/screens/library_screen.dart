@@ -3,7 +3,7 @@ import 'package:chord_list_app/features/library/application/library_view_model_p
 import 'package:chord_list_app/features/library/domain/models/save_chord_action_type.dart';
 import 'package:chord_list_app/features/library/presentation/widgets/chord_bottom_sheet_widget.dart';
 import 'package:chord_list_app/features/library/presentation/widgets/chord_notation_toggle.dart';
-import 'package:chord_list_app/features/library/presentation/widgets/chord_position_card_widget.dart';
+import 'package:chord_list_app/shared/widgets/chord_position_card_widget.dart';
 import 'package:chord_list_app/features/library/presentation/widgets/new_box_dialog.dart';
 import 'package:chord_list_app/features/library/presentation/widgets/root_selector_widget.dart';
 import 'package:chord_list_app/features/library/presentation/widgets/select_box_bottom_sheet_widget.dart';
