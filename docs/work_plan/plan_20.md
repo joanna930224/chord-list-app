@@ -29,11 +29,13 @@ Box 상세페이지 — 카드 롱프레스
 ### Box 상세페이지 — 편집 모드
 
 **앱바**
+
 - 좌측: "취소" TextButton (더보기 아이콘 숨김)
 - 제목: "편집" 고정 텍스트
 - 우측: "저장" TextButton (저장 중 비활성)
 
 **코드 카드 그리드 (편집 모드)**
+
 - `ReorderableWrap(maxMainAxisCount: 2)` — `reorderables` 패키지
   - landscape: `maxMainAxisCount: 4`
   - `spacing` / `runSpacing`: 12
@@ -47,6 +49,7 @@ Box 상세페이지 — 카드 롱프레스
 - 롱프레스로 드래그 시작 (`ReorderableWrap` 기본 동작)
 
 **상태 관리**
+
 - 편집 상태는 `box_detail_screen.dart` 내 **로컬 `useState`** 로 관리
   - `isEditing = useState(false)`
   - `editingDetails = useState<List<BoxChordDetailModel>>([])`
@@ -62,12 +65,12 @@ Box 상세페이지 — 카드 롱프레스
 
 순서를 영속화하는 방법 비교:
 
-| 방식 | 설명 | 단점 |
-|------|------|------|
-| **`sortOrder` integer 컬럼** ✅ | 전용 정수 컬럼으로 순서 저장 | 없음 (표준적) |
-| `savedAt` 조작 | 순서 변경 시 savedAt을 덮어씀 | 실제 저장 시각 훼손 |
-| Box 레코드에 JSON 저장 | Box 테이블에 순서 배열 저장 | 쿼리 복잡, 정규화 위반 |
-| 별도 order 테이블 | 전용 테이블 분리 | 과도한 설계 |
+| 방식                            | 설명                          | 단점                   |
+| ------------------------------- | ----------------------------- | ---------------------- |
+| **`sortOrder` integer 컬럼** ✅ | 전용 정수 컬럼으로 순서 저장  | 없음 (표준적)          |
+| `savedAt` 조작                  | 순서 변경 시 savedAt을 덮어씀 | 실제 저장 시각 훼손    |
+| Box 레코드에 JSON 저장          | Box 테이블에 순서 배열 저장   | 쿼리 복잡, 정규화 위반 |
+| 별도 order 테이블               | 전용 테이블 분리              | 과도한 설계            |
 
 → **`sortOrder` integer 컬럼이 가장 적합.** clean하고 쿼리가 단순하며 표준적인 패턴.
 
@@ -137,14 +140,14 @@ Box 상세페이지 — 카드 롱프레스
 
 **완료 조건:**
 
-- [ ] `BoxChords` 테이블에 `sortOrder` 컬럼 추가됨
-- [ ] `app_database.dart` 변경 없음 (`schemaVersion` 그대로 1 유지)
-- [ ] 코드 저장 시 `sortOrder` 자동 배정 (max+1)
-- [ ] `watchByBoxIdWithDetails` 정렬 기준이 `sortOrder` 오름차순으로 변경됨
-- [ ] `saveEditChanges` 메서드 추가됨
-- [ ] `insertBoxChord` 호출부 2곳 수정됨
-- [ ] `build_runner` 재실행 완료
-- [ ] `flutter analyze` 오류 없음
+- [x] `BoxChords` 테이블에 `sortOrder` 컬럼 추가됨
+- [x] `app_database.dart` 변경 없음 (`schemaVersion` 그대로 1 유지)
+- [x] 코드 저장 시 `sortOrder` 자동 배정 (max+1)
+- [x] `watchByBoxIdWithDetails` 정렬 기준이 `sortOrder` 오름차순으로 변경됨
+- [x] `saveEditChanges` 메서드 추가됨
+- [x] `insertBoxChord` 호출부 2곳 수정됨
+- [x] `build_runner` 재실행 완료
+- [x] `flutter analyze` 오류 없음
 
 **커밋 메시지 제안:** `feat: BoxChords sortOrder 컬럼 추가 (#20)`
 
@@ -212,14 +215,14 @@ Box 상세페이지 — 카드 롱프레스
 
 **완료 조건:**
 
-- [ ] 카드 롱프레스 시 편집 모드 전환됨
-- [ ] 앱바가 "편집" / 취소 / 저장 버튼으로 전환됨
-- [ ] 카드 흔들림 애니메이션 적용됨
-- [ ] "−" 버튼 탭 시 해당 카드가 목록에서 제거됨 (로컬 반영)
-- [ ] 카드 드래그로 순서 변경 가능
-- [ ] "저장" 탭 시 변경사항이 DB에 반영되고 일반 모드로 복귀됨
-- [ ] "취소" 탭 시 변경사항 없이 일반 모드로 복귀됨
-- [ ] `flutter analyze` 오류 없음
+- [x] 카드 롱프레스 시 편집 모드 전환됨
+- [x] 앱바가 "편집" / 취소 / 저장 버튼으로 전환됨
+- [x] 카드 흔들림 애니메이션 적용됨
+- [x] "−" 버튼 탭 시 해당 카드가 목록에서 제거됨 (로컬 반영)
+- [x] 카드 드래그로 순서 변경 가능
+- [x] "저장" 탭 시 변경사항이 DB에 반영되고 일반 모드로 복귀됨
+- [x] "취소" 탭 시 변경사항 없이 일반 모드로 복귀됨
+- [x] `flutter analyze` 오류 없음
 
 **커밋 메시지 제안:** `feat: Box 상세페이지 편집 모드 UI 구현 (#20)`
 
@@ -238,7 +241,7 @@ Box 상세페이지 — 카드 롱프레스
 
 ## 작업 시작 전 체크리스트
 
-- [ ] `docs/architecture/` 문서 숙지 완료
-- [ ] `BoxChords` 테이블 및 현재 `insertBoxChord` 호출부 2곳 파악 완료
-- [ ] Meerkat `service_widgets.dart`의 `_ShakeWidget` 구현 숙지 완료
-- [ ] `reorderables` 패키지 추가 사용자 승인 완료
+- [x] `docs/architecture/` 문서 숙지 완료
+- [x] `BoxChords` 테이블 및 현재 `insertBoxChord` 호출부 2곳 파악 완료
+- [x] Meerkat `service_widgets.dart`의 `_ShakeWidget` 구현 숙지 완료
+- [x] `reorderables` 패키지 추가 사용자 승인 완료
