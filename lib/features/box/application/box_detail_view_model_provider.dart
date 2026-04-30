@@ -37,6 +37,13 @@ class BoxDetailViewModelNotifier extends AsyncNotifier<BoxDetailState> {
     );
   }
 
+  Future<void> refreshBox() async {
+    final db = ref.read(appDatabaseProvider);
+    final box = await db.boxDao.findById(_boxId);
+    if (box == null || !state.hasValue) return;
+    state = AsyncData(state.value!.copyWith(box: ChordBoxModel.fromData(box)));
+  }
+
   void _subscribe(AppDatabase db, int boxId) {
     _subscription?.cancel();
     _subscription =

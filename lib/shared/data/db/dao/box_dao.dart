@@ -31,6 +31,10 @@ class BoxDao extends DatabaseAccessor<AppDatabase> with _$BoxDaoMixin {
   Future<int> insertBox(ChordBoxesCompanion companion) =>
       into(chordBoxes).insert(companion);
 
+  /// Box 수정
+  Future<int> updateBox(int id, ChordBoxesCompanion companion) =>
+      (update(chordBoxes)..where((t) => t.id.equals(id))).write(companion);
+
   /// Box 삭제
   Future<int> deleteById(int id) =>
       (delete(chordBoxes)..where((t) => t.id.equals(id))).go();
