@@ -7,4 +7,5 @@ class BoxChords extends Table {
   IntColumn get boxId => integer().references(ChordBoxes, #id)();
   IntColumn get chordPositionId => integer().references(ChordPositions, #id)();
   DateTimeColumn get savedAt => dateTime()();
+  IntColumn get sortOrder => integer()();
 }

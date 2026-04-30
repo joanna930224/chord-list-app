@@ -1,5 +1,5 @@
 import 'package:chord_list_app/shared/data/db/app_database.dart';
-import 'package:drift/drift.dart';
+import 'package:drift/drift.dart' show Value;
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -28,16 +28,9 @@ void main() {
     await db.close();
   });
 
-  BoxChordsCompanion companion({int? boxIdOverride, int? positionIdOverride}) =>
-      BoxChordsCompanion.insert(
-        boxId: boxIdOverride ?? boxId,
-        chordPositionId: positionIdOverride ?? chordPositionId,
-        savedAt: DateTime(2026, 1, 1),
-      );
-
   group('BoxChordDao - insertBoxChord / watchByBoxId', () {
     test('insertBoxChord: 삽입 후 watchByBoxId로 조회되어야 한다', () async {
-      await db.boxChordDao.insertBoxChord(companion());
+      await db.boxChordDao.insertBoxChord(boxId, chordPositionId);
       final list = await db.boxChordDao.watchByBoxId(boxId).first;
       expect(list, isNotEmpty);
       expect(list.first.chordPositionId, equals(chordPositionId));
@@ -52,7 +45,7 @@ void main() {
         ),
       );
 
-      await db.boxChordDao.insertBoxChord(companion(boxIdOverride: otherBoxId));
+      await db.boxChordDao.insertBoxChord(otherBoxId, chordPositionId);
 
       final list = await db.boxChordDao.watchByBoxId(boxId).first;
       expect(list, isEmpty);
@@ -61,7 +54,7 @@ void main() {
 
   group('BoxChordDao - existsInBox', () {
     test('existsInBox: 저장된 항목은 true를 반환해야 한다', () async {
-      await db.boxChordDao.insertBoxChord(companion());
+      await db.boxChordDao.insertBoxChord(boxId, chordPositionId);
       final exists = await db.boxChordDao.existsInBox(boxId, chordPositionId);
       expect(exists, isTrue);
     });
@@ -74,7 +67,7 @@ void main() {
 
   group('BoxChordDao - deleteBoxChord', () {
     test('deleteBoxChord: 삭제 후 watchByBoxId 목록에서 제거되어야 한다', () async {
-      await db.boxChordDao.insertBoxChord(companion());
+      await db.boxChordDao.insertBoxChord(boxId, chordPositionId);
       await db.boxChordDao.deleteBoxChord(boxId, chordPositionId);
       final list = await db.boxChordDao.watchByBoxId(boxId).first;
       expect(list, isEmpty);

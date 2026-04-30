@@ -42,13 +42,7 @@ class NewBoxDialog extends HookConsumerWidget {
             createdAt: DateTime.now(),
           ),
         );
-        await db.boxChordDao.insertBoxChord(
-          BoxChordsCompanion.insert(
-            boxId: boxId,
-            chordPositionId: chordPositionId,
-            savedAt: DateTime.now(),
-          ),
-        );
+        await db.boxChordDao.insertBoxChord(boxId, chordPositionId);
         onSuccess(title);
       } catch (_) {
         isLoading.value = false;

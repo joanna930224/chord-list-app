@@ -2,7 +2,6 @@ import 'package:chord_list_app/features/box/application/box_view_model_provider.
 import 'package:chord_list_app/features/box/domain/models/chord_box_model.dart';
 import 'package:chord_list_app/features/box/presentation/widgets/box_empty_widget.dart';
 import 'package:chord_list_app/features/box/presentation/widgets/box_list_tile_widget.dart';
-import 'package:chord_list_app/shared/data/db/app_database.dart';
 import 'package:chord_list_app/shared/exports.dart';
 import 'package:chord_list_app/shared/providers/database_provider.dart';
 import 'package:chord_list_app/shared/template/c_bottom_sheet.dart';
@@ -50,13 +49,7 @@ class SelectBoxBottomSheetWidget extends HookConsumerWidget {
       }
 
       try {
-        await db.boxChordDao.insertBoxChord(
-          BoxChordsCompanion.insert(
-            boxId: box.id,
-            chordPositionId: chordPositionId,
-            savedAt: DateTime.now(),
-          ),
-        );
+        await db.boxChordDao.insertBoxChord(box.id, chordPositionId);
         if (!context.mounted) return;
         context.pop();
         onSuccess(box.title);

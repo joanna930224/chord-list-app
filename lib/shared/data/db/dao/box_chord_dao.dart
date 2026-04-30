@@ -19,9 +19,25 @@ class BoxChordDao extends DatabaseAccessor<AppDatabase>
             ..orderBy([(t) => OrderingTerm.desc(t.savedAt)]))
           .watch();
 
-  /// 코드 저장
-  Future<int> insertBoxChord(BoxChordsCompanion companion) =>
-      into(boxChords).insert(companion);
+  /// 코드 저장 (sortOrder 자동 배정)
+  Future<int> insertBoxChord(int boxId, int chordPositionId) async {
+    return transaction(() async {
+      final sortOrderMax = boxChords.sortOrder.max();
+      final row = await (selectOnly(boxChords)
+            ..addColumns([sortOrderMax])
+            ..where(boxChords.boxId.equals(boxId)))
+          .getSingle();
+      final nextOrder = (row.read(sortOrderMax) ?? -1) + 1;
+      return into(boxChords).insert(
+        BoxChordsCompanion.insert(
+          boxId: boxId,
+          chordPositionId: chordPositionId,
+          savedAt: DateTime.now(),
+          sortOrder: nextOrder,
+        ),
+      );
+    });
+  }
 
   /// 중복 확인
   Future<bool> existsInBox(int boxId, int chordPositionId) async {
@@ -44,6 +60,35 @@ class BoxChordDao extends DatabaseAccessor<AppDatabase>
           ))
           .go();
 
+  /// 편집 모드 저장 (삭제 + sortOrder 일괄 갱신, 트랜잭션)
+  Future<void> saveEditChanges(
+    int boxId,
+    List<int> remainingChordPositionIds,
+  ) async {
+    await transaction(() async {
+      if (remainingChordPositionIds.isEmpty) {
+        await (delete(boxChords)..where((t) => t.boxId.equals(boxId))).go();
+      } else {
+        await (delete(boxChords)
+              ..where(
+                (t) =>
+                    t.boxId.equals(boxId) &
+                    t.chordPositionId.isNotIn(remainingChordPositionIds),
+              ))
+            .go();
+        for (int i = 0; i < remainingChordPositionIds.length; i++) {
+          await (update(boxChords)
+                ..where(
+                  (t) =>
+                      t.boxId.equals(boxId) &
+                      t.chordPositionId.equals(remainingChordPositionIds[i]),
+                ))
+              .write(BoxChordsCompanion(sortOrder: Value(i)));
+        }
+      }
+    });
+  }
+
   /// Box에 저장된 코드 상세 목록 조회 (Chord + ChordPosition join, Stream)
   Stream<List<BoxChordDetailModel>> watchByBoxIdWithDetails(int boxId) {
     final query =
@@ -55,7 +100,7 @@ class BoxChordDao extends DatabaseAccessor<AppDatabase>
             innerJoin(chords, chords.id.equalsExp(chordPositions.chordId)),
           ])
           ..where(boxChords.boxId.equals(boxId))
-          ..orderBy([OrderingTerm.asc(boxChords.savedAt)]);
+          ..orderBy([OrderingTerm.asc(boxChords.sortOrder)]);
 
     return query.watch().map(
       (rows) => rows
