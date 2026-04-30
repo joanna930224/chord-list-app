@@ -83,7 +83,7 @@
 
 **신규 파일**
 
-- `lib/features/box/domain/models/box_chord_detail_model.dart` — BoxChord + ChordPosition + Chord 통합 모델
+- `lib/shared/models/box_chord_detail_model.dart` — BoxChord + ChordPosition + Chord 통합 모델 (shared)
 - `lib/features/box/application/box_detail_state.dart` — 상세페이지 상태
 - `lib/features/box/application/box_detail_view_model_provider.dart` — 상세페이지 ViewModel
 - `lib/features/box/presentation/widgets/box_edit_dialog.dart` — Box 수정 다이얼로그
@@ -104,57 +104,41 @@
 
 ---
 
-### Phase 1: 데이터 레이어 + Box 상세페이지 기본 UI
+### Phase 1: 데이터 레이어 + Box 상세페이지 기본 UI ✅
 
 **목표:** Box 상세페이지에 저장된 코드 운지법 카드 목록과 Box 정보를 표시한다.
-
-**설계 메모:**
-
-`BoxChordDao.watchByBoxId`는 `chordPositionId`만 반환하므로, `ChordPosition` + `Chord`를 함께 조회하는 join 쿼리가 필요하다.
-Drift custom query 또는 `BoxChords` ⋈ `ChordPositions` ⋈ `Chords` 3-way join으로 구현한다.
-
-> **⚠️ Drift `@DriftAccessor` tables 갱신 필수**
-> 현재 `BoxChordDao`는 `@DriftAccessor(tables: [BoxChords])`만 선언되어 있다.
-> join 쿼리에서 `ChordPositions`, `Chords` 테이블을 참조하려면 아래와 같이 변경해야 한다:
-> ```dart
-> @DriftAccessor(tables: [BoxChords, ChordPositions, Chords])
-> ```
-> 변경 후 `build_runner`를 재실행해야 `box_chord_dao.g.dart`가 재생성된다.
 
 **작업 파일:**
 
 - `lib/shared/data/db/dao/box_chord_dao.dart` — 수정
   - `@DriftAccessor(tables: [BoxChords, ChordPositions, Chords])` 로 변경
-  - `watchByBoxIdWithDetails(int boxId)` 추가
-  - `BoxChords JOIN ChordPositions JOIN Chords` 3-way join Stream 반환
-  - 반환 타입: Drift 자동 생성 typedResult 또는 커스텀 타입
-- `lib/features/box/domain/models/box_chord_detail_model.dart` — 신규
+  - `watchByBoxIdWithDetails(int boxId)` 추가 — `BoxChords JOIN ChordPositions JOIN Chords` 3-way join Stream
+  - 반환 타입: `Stream<List<BoxChordDetailModel>>` (shared/models 직접 반환)
+  - `orderBy`: `asc(savedAt)` — 추가 순서대로 표시
+- `lib/shared/models/box_chord_detail_model.dart` — 신규
   - `BoxChordDetailModel({ chord, position, savedAt })` — 불변 클래스
-  - `fromData(...)` factory 생성자
+  - shared 레이어에 위치 (DAO·feature 양쪽에서 import)
 - `lib/features/box/application/box_detail_state.dart` — 신규
   - `BoxDetailState({ box, chordDetails })` — `@CopyWith()` 적용
-  - `box`: `ChordBoxModel`, `chordDetails`: `List<BoxChordDetailModel>`
 - `lib/features/box/application/box_detail_view_model_provider.dart` — 신규
-  - `boxDetailViewModelProvider(int boxId)` — `family` 사용
-  - `boxViewModelProvider`의 패턴 동일하게 적용 (Stream 구독)
-  - `BoxDao.findById(boxId)` + `BoxChordDao.watchByBoxIdWithDetails(boxId)` 조합
+  - Riverpod 3 family 패턴: 생성자에서 `boxId` 수신, `AsyncNotifier<BoxDetailState>` 상속
+  - `BoxDao.findById(boxId)` (1회) + `BoxChordDao.watchByBoxIdWithDetails(boxId)` (Stream 구독) 조합
 - `lib/features/box/presentation/screens/box_detail_screen.dart` — 수정
-  - `HookConsumerWidget`으로 변경
-  - `boxDetailViewModelProvider(boxId)` 구독
-  - 상단 Box 정보 영역 (제목, 설명, 생성일)
-  - 코드 운지법 2열 그리드 (`ChordPositionCardWidget` 재사용)
+  - `HookConsumerWidget` + `FutureValueWidget` 사용
+  - 상단 Box 정보 영역 (설명·생성일, `.ph20` extension 적용)
+  - 코드 운지법 그리드: 세로 2열 / 가로(landscape) 4열
   - 빈 상태 UI
-  - 더보기 아이콘 자리만 AppBar에 배치 (동작은 Phase 2)
+  - 더보기 아이콘 placeholder (동작은 Phase 2)
 
 **완료 조건:**
 
-- [ ] Box 상세페이지에서 Box 제목·설명·생성일이 올바르게 표시됨
-- [ ] 저장된 코드 운지법 카드가 2열 그리드로 렌더링됨
-- [ ] 빈 상태에서 안내 텍스트 표시됨
-- [ ] `build_runner` 재실행 완료 (`box_chord_dao.g.dart`, `box_detail_state.g.dart` 재생성)
-- [ ] `flutter analyze` 오류 없음
+- [x] Box 상세페이지에서 Box 제목·설명·생성일이 올바르게 표시됨
+- [x] 저장된 코드 운지법 카드가 2열(가로 4열) 그리드로 렌더링됨
+- [x] 빈 상태에서 안내 텍스트 표시됨
+- [x] `build_runner` 재실행 완료
+- [x] `flutter analyze` 오류 없음
 
-**커밋 메시지 제안:** `feat: Box 상세페이지 기본 UI 구현 (#19)`
+**커밋 메시지:** `feat: Box 상세페이지 기본 UI 구현 (#19)`
 
 ---
 
@@ -181,12 +165,12 @@ Drift custom query 또는 `BoxChords` ⋈ `ChordPositions` ⋈ `Chords` 3-way jo
 
 **완료 조건:**
 
-- [ ] 더보기 아이콘 탭 시 드롭다운 메뉴 (수정/삭제) 표시됨
-- [ ] 수정 탭 시 `BoxEditDialog` 오픈, 기존 제목·설명 초기값 확인
-- [ ] 수정 저장 후 상세페이지 정보 즉시 반영됨
-- [ ] 삭제 탭 시 확인 다이얼로그 표시, 취소/확인 동작 확인
-- [ ] 삭제 완료 후 Box 리스트 페이지로 이동, 삭제된 Box가 목록에서 제거됨
-- [ ] `flutter analyze` 오류 없음
+- [x] 더보기 아이콘 탭 시 드롭다운 메뉴 (수정/삭제) 표시됨
+- [x] 수정 탭 시 `BoxEditDialog` 오픈, 기존 제목·설명 초기값 확인
+- [x] 수정 저장 후 상세페이지 정보 즉시 반영됨
+- [x] 삭제 탭 시 확인 다이얼로그 표시, 취소/확인 동작 확인
+- [x] 삭제 완료 후 Box 리스트 페이지로 이동, 삭제된 Box가 목록에서 제거됨
+- [x] `flutter analyze` 오류 없음
 
 **커밋 메시지 제안:** `feat: Box 수정/삭제 플로우 구현 (#19)`
 
@@ -194,10 +178,10 @@ Drift custom query 또는 `BoxChords` ⋈ `ChordPositions` ⋈ `Chords` 3-way jo
 
 ## 주의사항
 
-- **`ChordPositionCardWidget` 재사용**: `chord`(`Chord` 타입), `position`(`ChordPosition` 타입)이 필요하므로 join 쿼리에서 두 테이블 데이터를 모두 가져와야 한다
-- **`boxDetailViewModelProvider` family 사용**: `boxId`를 파라미터로 받아야 하므로 `.family`로 선언한다
+- **`boxDetailViewModelProvider` Riverpod 3 family 패턴**: `AutoDisposeFamilyAsyncNotifier` 대신, 생성자에서 `boxId`를 받고 `AsyncNotifier<BoxDetailState>`를 상속한다
+- **수정 후 box 정보 즉시 반영**: ViewModel은 box를 `findById`로 1회만 fetch한다. 수정 성공 후 ViewModel에 `refreshBox()` 메서드를 호출해 box 정보를 재조회하고 state를 갱신한다
 - **삭제 후 이동**: `BoxDao.deleteById` 호출 시 `boxViewModelProvider`가 Stream으로 구독 중이므로 Box 리스트는 자동 반영된다. `context.pop()`으로 상세페이지 이탈만 처리하면 된다
-- **`BoxEditDialog` 분리**: `NewBoxDialog`는 Box 생성 + BoxChord 저장을 함께 처리하므로 수정 용도로 재사용하기 어렵다. `BoxEditDialog`를 별도 파일로 신규 생성한다
+- **`BoxEditDialog` 분리**: `NewBoxDialog`와 동일한 레이아웃 구조이나, `onSuccess` / `onError` 콜백 패턴 동일하게 적용
 - **`updateBox` 미구현**: 현재 `BoxDao`에 수정 메서드가 없으므로 Phase 2에서 추가해야 한다
 
 ---
