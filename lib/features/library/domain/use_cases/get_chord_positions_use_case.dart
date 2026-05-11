@@ -1,7 +1,7 @@
-import 'package:chord_list_app/features/library/domain/models/chord_with_positions_model.dart';
 import 'package:chord_list_app/shared/data/db/app_database.dart';
 import 'package:chord_list_app/shared/models/chord_root.dart';
 import 'package:chord_list_app/shared/models/chord_type.dart';
+import 'package:chord_list_app/shared/models/chord_with_positions_model.dart';
 
 class GetChordPositionsUseCase {
   const GetChordPositionsUseCase(this._db);

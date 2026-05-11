@@ -9,11 +9,13 @@ class ChordPositionCardWidget extends ConsumerWidget {
     required this.chord,
     required this.position,
     required this.onTap,
+    this.fingerSize = 16,
   });
 
   final Chord chord;
   final ChordPosition position;
   final VoidCallback onTap;
+  final double fingerSize;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,7 +37,7 @@ class ChordPositionCardWidget extends ConsumerWidget {
         child: FlutterGuitarChord(
           frets: position.frets,
           fingers: position.fingers,
-          fingerSize: 16,
+          fingerSize: fingerSize,
           stringStroke: 1,
           baseFret: position.baseFret,
           chordName: chord.name,
