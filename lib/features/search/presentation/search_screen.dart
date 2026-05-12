@@ -1,5 +1,6 @@
 import 'package:chord_list_app/features/search/application/search_state.dart';
 import 'package:chord_list_app/features/search/application/search_view_model_provider.dart';
+import 'package:chord_list_app/features/search/presentation/screens/chord_detail_screen.dart';
 import 'package:chord_list_app/features/search/presentation/widgets/chord_group_row_widget.dart';
 import 'package:chord_list_app/shared/exports.dart';
 import 'package:chord_list_app/shared/models/chord_with_positions_model.dart';
@@ -59,9 +60,17 @@ class SearchScreen extends HookConsumerWidget {
                 error: (e, _) => Center(child: Text(e.toString())),
                 data: (data) => _SearchBody(
                   data: data,
-                  onChordTap: (item) => {},
-                  // phase4에서 구현
-                  // context.push('/chord/${item.chord.id}'),
+                  onChordTap: (item) async {
+                    await context.pushNamed(
+                      ChordDetailScreen.routeName,
+                      pathParameters: {'id': item.chord.id.toString()},
+                    );
+                    if (context.mounted) {
+                      await ref
+                          .read(searchViewModelProvider.notifier)
+                          .refreshRecent();
+                    }
+                  },
                 ),
               ),
             ),
@@ -76,7 +85,7 @@ class _SearchBody extends StatelessWidget {
   const _SearchBody({required this.data, required this.onChordTap});
 
   final SearchState data;
-  final void Function(ChordWithPositionsModel) onChordTap;
+  final Future<void> Function(ChordWithPositionsModel) onChordTap;
 
   @override
   Widget build(BuildContext context) {
@@ -99,14 +108,23 @@ class _SearchBody extends StatelessWidget {
         if (showRecent) ...[
           _SectionTitle(title: '최근 검색한 코드'),
           ...data.recentChords.map(
-            (item) =>
-                ChordGroupRowWidget(item: item, onTap: () => onChordTap(item)),
+            (item) => ChordGroupRowWidget(
+              item: item,
+              onTap: () {
+                onChordTap(item);
+              },
+            ),
+          ),
+        ] else ...[
+          ...chords.map(
+            (item) => ChordGroupRowWidget(
+              item: item,
+              onTap: () {
+                onChordTap(item);
+              },
+            ),
           ),
         ],
-        ...chords.map(
-          (item) =>
-              ChordGroupRowWidget(item: item, onTap: () => onChordTap(item)),
-        ),
       ],
     );
   }

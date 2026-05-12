@@ -61,31 +61,41 @@ class GetSearchedChordsUseCase {
         .toList();
 
     return tokens.every((token) {
-      final tokenNoSpace = token.replaceAll(' ', '');
       return targets.any((t) => t.contains(token)) ||
-          targetsNoSpace.any((t) => t.contains(tokenNoSpace));
+          targetsNoSpace.any((t) => t.contains(token));
     });
   }
 
   // 높을수록 상위 노출: exact > startsWith > contains
+  // aliases(이명동음)는 name과 동일한 우선순위로 취급
   static int _score(
     ChordWithPositionsModel item,
     String normalizedQuery,
   ) {
     final name = item.chord.name.toLowerCase();
     final fullName = item.chord.fullName.toLowerCase();
+    final alias = item.chord.aliases?.toLowerCase();
     final nameNoSpace = name.replaceAll(' ', '');
     final fullNameNoSpace = fullName.replaceAll(' ', '');
+    final aliasNoSpace = alias?.replaceAll(' ', '');
     final queryNoSpace = normalizedQuery.replaceAll(' ', '');
 
     if (name == normalizedQuery || nameNoSpace == queryNoSpace) { return 100; }
+    if (alias != null &&
+        (alias == normalizedQuery || aliasNoSpace == queryNoSpace)) { return 100; }
     if (fullName == normalizedQuery || fullNameNoSpace == queryNoSpace) { return 90; }
     if (name.startsWith(normalizedQuery) ||
         nameNoSpace.startsWith(queryNoSpace)) { return 80; }
+    if (alias != null &&
+        (alias.startsWith(normalizedQuery) ||
+            aliasNoSpace!.startsWith(queryNoSpace))) { return 80; }
     if (fullName.startsWith(normalizedQuery) ||
         fullNameNoSpace.startsWith(queryNoSpace)) { return 70; }
     if (name.contains(normalizedQuery) ||
         nameNoSpace.contains(queryNoSpace)) { return 60; }
+    if (alias != null &&
+        (alias.contains(normalizedQuery) ||
+            aliasNoSpace!.contains(queryNoSpace))) { return 60; }
     if (fullName.contains(normalizedQuery) ||
         fullNameNoSpace.contains(queryNoSpace)) { return 50; }
     return 10;
