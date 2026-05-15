@@ -16,6 +16,7 @@ class CListTile extends StatelessWidget {
     this.trailing,
     this.onTap,
     this.hapticType = HapticType.light,
+    this.scaleValue = 0.95,
   });
 
   /// 화살표 아이콘이 있는 ListTile 팩토리
@@ -58,6 +59,7 @@ class CListTile extends StatelessWidget {
       trailing: Switch(value: value, onChanged: onChanged),
       onTap: () => onChanged(!value),
       hapticType: hapticType,
+      scaleValue: 1.0,
     );
   }
 
@@ -87,6 +89,7 @@ class CListTile extends StatelessWidget {
   final Widget? trailing;
   final VoidCallback? onTap;
   final HapticType hapticType;
+  final double scaleValue;
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +108,11 @@ class CListTile extends StatelessWidget {
     );
 
     if (onTap != null) {
-      return CScaleButton(hapticType: hapticType, child: listTile);
+      return CScaleButton(
+        hapticType: hapticType,
+        scaleValue: scaleValue,
+        child: listTile,
+      );
     }
 
     return listTile;

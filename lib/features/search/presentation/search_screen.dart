@@ -108,21 +108,13 @@ class _SearchBody extends StatelessWidget {
         if (showRecent) ...[
           _SectionTitle(title: '최근 검색한 코드'),
           ...data.recentChords.map(
-            (item) => ChordGroupRowWidget(
-              item: item,
-              onTap: () {
-                onChordTap(item);
-              },
-            ),
+            (item) =>
+                ChordGroupRowWidget(item: item, onTap: () => onChordTap(item)),
           ),
         ] else ...[
           ...chords.map(
-            (item) => ChordGroupRowWidget(
-              item: item,
-              onTap: () {
-                onChordTap(item);
-              },
-            ),
+            (item) =>
+                ChordGroupRowWidget(item: item, onTap: () => onChordTap(item)),
           ),
         ],
       ],
