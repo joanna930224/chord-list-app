@@ -48,6 +48,25 @@ class MyScreen extends HookConsumerWidget {
                     viewModel.setHaptic(value);
                   },
                 ),
+                SizedBox(height: 20),
+                Divider(color: context.colorScheme.onPrimary),
+                SizedBox(height: 20),
+                Text(
+                  '정보',
+                  style: context.textTheme.semiBold14.copyWith(
+                    color: context.colorScheme.onSurface,
+                  ),
+                ).ph16,
+                SizedBox(height: 8),
+                CListTile.custom(
+                  title: '앱 버전',
+                  trailing: Text(
+                    'v ${data.appVersion}',
+                    style: context.textTheme.medium14.copyWith(
+                      color: context.colorScheme.primary,
+                    ),
+                  ),
+                ),
                 SizedBox(height: 40),
               ],
             ),

@@ -4,7 +4,8 @@ part 'my_state.g.dart';
 
 @CopyWith()
 class MyState {
-  const MyState({required this.isHaptic});
+  const MyState({required this.isHaptic, required this.appVersion});
 
   final bool isHaptic;
+  final String appVersion;
 }
