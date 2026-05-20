@@ -20,102 +20,104 @@ class MyScreen extends HookConsumerWidget {
         return Scaffold(
           backgroundColor: context.colorScheme.surface,
           body: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 16),
-                Text(
-                  'MY',
-                  style: context.textTheme.bold20.copyWith(
-                    color: context.colorScheme.onSurface,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 16),
+                  Text(
+                    'MY',
+                    style: context.textTheme.bold20.copyWith(
+                      color: context.colorScheme.onSurface,
+                    ),
+                  ).ph16,
+                  SizedBox(height: 24),
+                  Text(
+                    '설정',
+                    style: context.textTheme.semiBold14.copyWith(
+                      color: context.colorScheme.onSurface,
+                    ),
+                  ).ph16,
+                  SizedBox(height: 8),
+                  CListTile.arrow(
+                    title: '화면 테마',
+                    onTap: () =>
+                        context.pushNamed(ThemeModeSettingScreen.routeName),
                   ),
-                ).ph16,
-                SizedBox(height: 24),
-                Text(
-                  '설정',
-                  style: context.textTheme.semiBold14.copyWith(
-                    color: context.colorScheme.onSurface,
-                  ),
-                ).ph16,
-                SizedBox(height: 8),
-                CListTile.arrow(
-                  title: '화면 테마',
-                  onTap: () =>
-                      context.pushNamed(ThemeModeSettingScreen.routeName),
-                ),
-                CListTile.switchToggle(
-                  title: '진동',
-                  value: data.isHaptic,
-                  onChanged: (value) {
-                    viewModel.setHaptic(value);
-                  },
-                ),
-                SizedBox(height: 20),
-                Divider(color: context.colorScheme.onPrimary),
-                SizedBox(height: 20),
-                Text(
-                  '고객 센터',
-                  style: context.textTheme.semiBold14.copyWith(
-                    color: context.colorScheme.onSurface,
-                  ),
-                ).ph16,
-                SizedBox(height: 8),
-                CListTile.arrow(
-                  title: '공지사항',
-                  onTap: () => context.pushNamed(
-                    CWebViewScreen.routeName,
-                    queryParameters: {'title': '공지사항', 'url': URL_NOTICE},
-                  ),
-                ),
-                CListTile.arrow(
-                  title: '문의하기',
-                  onTap: () => context.pushNamed(
-                    CWebViewScreen.routeName,
-                    queryParameters: {'title': '문의하기', 'url': URL_INQUIRY},
-                  ),
-                ),
-                CListTile.arrow(
-                  title: '이용약관',
-                  onTap: () => context.pushNamed(
-                    CWebViewScreen.routeName,
-                    queryParameters: {'title': '이용약관', 'url': URL_TERMS},
-                  ),
-                ),
-                CListTile.arrow(
-                  title: '개인정보처리방침',
-                  onTap: () => context.pushNamed(
-                    CWebViewScreen.routeName,
-                    queryParameters: {
-                      'title': '개인정보처리방침',
-                      'url': URL_PRIVACY,
+                  CListTile.switchToggle(
+                    title: '진동',
+                    value: data.isHaptic,
+                    onChanged: (value) {
+                      viewModel.setHaptic(value);
                     },
                   ),
-                ),
-                SizedBox(height: 20),
-                Divider(color: context.colorScheme.onPrimary),
-                SizedBox(height: 20),
-                Text(
-                  '정보',
-                  style: context.textTheme.semiBold14.copyWith(
-                    color: context.colorScheme.onSurface,
-                  ),
-                ).ph16,
-                SizedBox(height: 8),
-                CListTile.custom(
-                  title: '앱 버전',
-                  trailing: Text(
-                    'v ${data.appVersion}',
-                    style: context.textTheme.medium14.copyWith(
-                      color: context.colorScheme.primary,
+                  SizedBox(height: 20),
+                  Divider(color: context.colorScheme.onPrimary),
+                  SizedBox(height: 20),
+                  Text(
+                    '고객 센터',
+                    style: context.textTheme.semiBold14.copyWith(
+                      color: context.colorScheme.onSurface,
+                    ),
+                  ).ph16,
+                  SizedBox(height: 8),
+                  CListTile.arrow(
+                    title: '공지사항',
+                    onTap: () => context.pushNamed(
+                      CWebViewScreen.routeName,
+                      queryParameters: {'title': '공지사항', 'url': URL_NOTICE},
                     ),
                   ),
-                ),
-                CListTile.arrow(
-                  title: '오픈소스 라이선스',
-                  onTap: () => context.pushNamed('licenses'),
-                ),
-                SizedBox(height: 40),
-              ],
+                  CListTile.arrow(
+                    title: '문의하기',
+                    onTap: () => context.pushNamed(
+                      CWebViewScreen.routeName,
+                      queryParameters: {'title': '문의하기', 'url': URL_INQUIRY},
+                    ),
+                  ),
+                  CListTile.arrow(
+                    title: '이용약관',
+                    onTap: () => context.pushNamed(
+                      CWebViewScreen.routeName,
+                      queryParameters: {'title': '이용약관', 'url': URL_TERMS},
+                    ),
+                  ),
+                  CListTile.arrow(
+                    title: '개인정보처리방침',
+                    onTap: () => context.pushNamed(
+                      CWebViewScreen.routeName,
+                      queryParameters: {
+                        'title': '개인정보처리방침',
+                        'url': URL_PRIVACY,
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Divider(color: context.colorScheme.onPrimary),
+                  SizedBox(height: 20),
+                  Text(
+                    '정보',
+                    style: context.textTheme.semiBold14.copyWith(
+                      color: context.colorScheme.onSurface,
+                    ),
+                  ).ph16,
+                  SizedBox(height: 8),
+                  CListTile.custom(
+                    title: '앱 버전',
+                    trailing: Text(
+                      'v ${data.appVersion}',
+                      style: context.textTheme.medium14.copyWith(
+                        color: context.colorScheme.primary,
+                      ),
+                    ),
+                  ),
+                  CListTile.arrow(
+                    title: '오픈소스 라이선스',
+                    onTap: () => context.pushNamed('licenses'),
+                  ),
+                  SizedBox(height: 40),
+                ],
+              ),
             ),
           ),
         );
