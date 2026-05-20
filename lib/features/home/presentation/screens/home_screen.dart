@@ -3,6 +3,7 @@ import 'package:chord_list_app/features/library/presentation/screens/library_scr
 import 'package:chord_list_app/features/my/presentation/screens/my_screen.dart';
 import 'package:chord_list_app/features/search/presentation/search_screen.dart';
 import 'package:chord_list_app/shared/exports.dart';
+import 'package:chord_list_app/shared/providers/analytics_provider.dart';
 import 'package:chord_list_app/shared/providers/haptic_provider.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -22,6 +23,13 @@ class _HomeView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = useState(0);
     final hapticService = ref.read(hapticProvider);
+    final analytics = ref.read(analyticsProvider);
+
+    useEffect(() {
+      analytics.logScreenView('home');
+      analytics.logScreenView('box_list');
+      return null;
+    }, const []);
 
     return Scaffold(
       body: IndexedStack(
@@ -50,6 +58,11 @@ class _HomeView extends HookConsumerWidget {
           currentIndex: currentIndex.value,
           onTap: (index) {
             hapticService.medium();
+            if (index != currentIndex.value) {
+              const screenNames = ['box_list', 'library', null, 'my'];
+              final name = screenNames[index];
+              if (name != null) analytics.logScreenView(name);
+            }
             currentIndex.value = index;
           },
           type: BottomNavigationBarType.fixed,

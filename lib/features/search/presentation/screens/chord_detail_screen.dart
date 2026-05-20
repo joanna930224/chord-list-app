@@ -1,6 +1,7 @@
 import 'package:chord_list_app/features/search/domain/use_cases/record_recently_searched_use_case.dart';
 import 'package:chord_list_app/shared/exports.dart';
 import 'package:chord_list_app/shared/models/chord_with_positions_model.dart';
+import 'package:chord_list_app/shared/providers/analytics_provider.dart';
 import 'package:chord_list_app/shared/providers/database_provider.dart';
 import 'package:chord_list_app/shared/template/c_scaffold.dart';
 import 'package:chord_list_app/shared/template/future_value_widget.dart';
@@ -27,6 +28,7 @@ class ChordDetailScreen extends HookConsumerWidget {
 
     useEffect(() {
       RecordRecentlySearchedUseCase(db).call(chordId);
+      ref.read(analyticsProvider).logScreenView('chord_detail');
       return null;
     }, const []);
 
@@ -67,6 +69,7 @@ class ChordDetailScreen extends HookConsumerWidget {
                               context,
                               item.chord,
                               position,
+                              analyticsSource: 'search_detail',
                             ),
                           );
                         }, childCount: item.positions.length),

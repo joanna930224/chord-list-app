@@ -78,7 +78,7 @@ class _LibraryBody extends StatelessWidget {
                   child: _ChordPositionGrid(
                     cards: cards,
                     onCardTap: (chord, position) =>
-                        showChordSaveBottomSheet(context, chord, position),
+                        showChordSaveBottomSheet(context, chord, position, analyticsSource: 'library'),
                   ),
                 ),
               ],

@@ -5,6 +5,7 @@ import 'package:chord_list_app/features/box/application/box_detail_view_model_pr
 import 'package:chord_list_app/features/box/presentation/widgets/box_edit_dialog.dart';
 import 'package:chord_list_app/shared/exports.dart';
 import 'package:chord_list_app/shared/models/box_chord_detail_model.dart';
+import 'package:chord_list_app/shared/providers/analytics_provider.dart';
 import 'package:chord_list_app/shared/providers/database_provider.dart';
 import 'package:chord_list_app/shared/template/c_dialog.dart';
 import 'package:chord_list_app/shared/template/c_scaffold.dart';
@@ -27,6 +28,11 @@ class BoxDetailScreen extends HookConsumerWidget {
     final isEditing = useState(false);
     final editingDetails = useState<List<BoxChordDetailModel>>([]);
     final isSaving = useState(false);
+
+    useEffect(() {
+      ref.read(analyticsProvider).logScreenView('box_detail');
+      return null;
+    }, const []);
 
     return FutureValueWidget(
       ref.watch(boxDetailViewModelProvider(boxId).future),

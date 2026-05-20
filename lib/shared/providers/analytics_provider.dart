@@ -13,4 +13,11 @@ class AnalyticsService {
   Future<void> logScreenView(String screenName) async {
     await _analytics.logScreenView(screenName: screenName);
   }
+
+  Future<void> logBoxCreated(String source) async {
+    await _analytics.logEvent(
+      name: 'box_created',
+      parameters: {'source': source},
+    );
+  }
 }
