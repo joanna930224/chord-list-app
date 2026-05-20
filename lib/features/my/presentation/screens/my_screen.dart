@@ -110,6 +110,10 @@ class MyScreen extends HookConsumerWidget {
                     ),
                   ),
                 ),
+                CListTile.arrow(
+                  title: '오픈소스 라이선스',
+                  onTap: () => context.pushNamed('licenses'),
+                ),
                 SizedBox(height: 40),
               ],
             ),

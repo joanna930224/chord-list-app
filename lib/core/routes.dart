@@ -6,6 +6,7 @@ import 'package:chord_list_app/features/my/presentation/screens/theme_mode_setti
 import 'package:chord_list_app/features/search/presentation/screens/chord_detail_screen.dart';
 import 'package:chord_list_app/features/splash/presentation/splash_screen.dart';
 import 'package:chord_list_app/shared/template/c_web_view_screen.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 final List<RouteBase> ROUTES = [
@@ -45,5 +46,10 @@ final List<RouteBase> ROUTES = [
       title: state.uri.queryParameters['title'] ?? '',
       url: state.uri.queryParameters['url'] ?? '',
     ),
+  ),
+  GoRoute(
+    path: '/licenses',
+    name: 'licenses',
+    builder: (_, _) => const LicensePage(),
   ),
 ];
