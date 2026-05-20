@@ -67,6 +67,39 @@
 		E77BFBE80509A0D5CBF4FE83 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		9599DDE82FBDE0CF00EC1882 /* Exceptions for "Firebase" folder in "Runner" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"GoogleService-Info.plist",
+			);
+			target = 97C146ED1CF9000F007C117D /* Runner */;
+		};
+		9599DDE92FBDE0CF00EC1882 /* Exceptions for "Firebase" folder in "RunnerTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"GoogleService-Info.plist",
+			);
+			target = 331C8080294A63A400263BE5 /* RunnerTests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		9599DDE42FBDE0A900EC1882 /* Firebase */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				9599DDE82FBDE0CF00EC1882 /* Exceptions for "Firebase" folder in "Runner" target */,
+				9599DDE92FBDE0CF00EC1882 /* Exceptions for "Firebase" folder in "RunnerTests" target */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = Firebase;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		447EB9C5303A147C7D5B9428 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -151,6 +184,7 @@
 				1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */,
 				74858FAE1ED2DC5600515810 /* AppDelegate.swift */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
+				9599DDE42FBDE0A900EC1882 /* Firebase */,
 			);
 			path = Runner;
 			sourceTree = "<group>";

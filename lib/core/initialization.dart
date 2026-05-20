@@ -2,12 +2,14 @@ import 'package:chord_list_app/shared/data/db/seed/box_seed_data.dart';
 import 'package:chord_list_app/shared/exports.dart';
 import 'package:chord_list_app/shared/providers/database_provider.dart';
 import 'package:chord_list_app/shared/utils/logger.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 
 const _seedBoxes = bool.fromEnvironment('SEED_BOXES');
 
 Future<ProviderContainer> initialization() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
 
   final container = ProviderContainer();
 
