@@ -5,6 +5,7 @@ import 'package:chord_list_app/features/home/presentation/screens/home_screen.da
 import 'package:chord_list_app/features/my/presentation/screens/theme_mode_setting_screen.dart';
 import 'package:chord_list_app/features/search/presentation/screens/chord_detail_screen.dart';
 import 'package:chord_list_app/features/splash/presentation/splash_screen.dart';
+import 'package:chord_list_app/shared/template/c_web_view_screen.dart';
 import 'package:go_router/go_router.dart';
 
 final List<RouteBase> ROUTES = [
@@ -36,5 +37,13 @@ final List<RouteBase> ROUTES = [
     name: ChordDetailScreen.routeName,
     builder: (context, state) =>
         ChordDetailScreen(chordId: int.parse(state.pathParameters['id']!)),
+  ),
+  GoRoute(
+    path: '/webview',
+    name: CWebViewScreen.routeName,
+    builder: (context, state) => CWebViewScreen(
+      title: state.uri.queryParameters['title'] ?? '',
+      url: state.uri.queryParameters['url'] ?? '',
+    ),
   ),
 ];

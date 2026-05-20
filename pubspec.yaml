@@ -29,6 +29,7 @@ dependencies:
   copy_with_extension: ^14.0.0
   reorderables: ^0.6.0
   package_info_plus: ^10.1.0
+  webview_flutter: ^4.13.1
 
 dev_dependencies:
   flutter_test:
