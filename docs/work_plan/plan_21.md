@@ -9,16 +9,19 @@
 ## 관련 파일
 
 **기존 파일 (수정)**
+
 - `lib/core/initialization.dart` — `Firebase.initializeApp()` 호출 추가
 - `android/build.gradle` — google-services classpath 추가
 - `android/app/build.gradle` — google-services plugin 적용
 
 **신규 파일 (생성)**
+
 - `lib/shared/providers/analytics_provider.dart` — `FirebaseAnalytics` 인스턴스 Provider
 - `ios/Runner/GoogleService-Info.plist` — Firebase iOS 설정 파일
 - `android/app/google-services.json` — Firebase Android 설정 파일
 
 **패키지 추가 필요 (사용자 승인 필요)**
+
 - `firebase_core` — Firebase 초기화
 - `firebase_analytics` — Analytics 이벤트 수집
 
@@ -43,6 +46,7 @@
 > 수동 진행 시 순서대로 따른다.
 
 **Firebase 콘솔 작업 (수동):**
+
 - [ ] Firebase Console에서 프로젝트 생성 (또는 기존 프로젝트 선택)
 - [ ] iOS 앱 등록 — Bundle ID: `com.example.chordListApp` (실제 값 확인 후 입력)
 - [ ] `GoogleService-Info.plist` 다운로드 → `ios/Runner/` 에 추가 + Xcode 파일 참조 확인
@@ -51,17 +55,19 @@
 - [ ] Firebase Console → Analytics 활성화 확인
 
 **작업 파일:**
+
 - `android/build.gradle` — `classpath 'com.google.gms:google-services:...'` 추가
 - `android/app/build.gradle` — `apply plugin: 'com.google.gms.google-services'` 추가
 - `ios/Runner/GoogleService-Info.plist` — 추가
 - `android/app/google-services.json` — 추가
 
 **완료 조건:**
-- [ ] Firebase 콘솔에서 iOS/Android 앱 등록 완료
-- [ ] 설정 파일이 각 플랫폼 경로에 존재
-- [ ] Android build.gradle 설정 완료
-- [ ] `flutter build apk --debug` 빌드 오류 없음 (Android 확인용)
-- [ ] flutter analyze 오류 없음
+
+- [x] Firebase 콘솔에서 iOS/Android 앱 등록 완료
+- [x] 설정 파일이 각 플랫폼 경로에 존재
+- [x] Android build.gradle 설정 완료
+- [x] `flutter build apk --debug` 빌드 오류 없음 (Android 확인용)
+- [x] flutter analyze 오류 없음
 
 **커밋 메시지 제안:** `chore: Firebase 프로젝트 설정 파일 추가 (#21)`
 
@@ -72,17 +78,20 @@
 **목표:** `firebase_core`, `firebase_analytics` 패키지를 추가하고 앱 시작 시 Firebase를 초기화한다. Analytics Provider를 생성하여 전역에서 사용할 수 있게 한다.
 
 **사전 작업:**
+
 - `firebase_core`, `firebase_analytics` 패키지 추가 (사용자 승인 후 진행)
 
 **작업 파일:**
+
 - `pubspec.yaml` — `firebase_core`, `firebase_analytics` 추가
 - `lib/core/initialization.dart` — `Firebase.initializeApp()` 호출 추가
 - `lib/shared/providers/analytics_provider.dart` — `FirebaseAnalytics` Provider 생성
 
 **완료 조건:**
-- [ ] 앱 실행 시 Firebase 초기화 오류 없음
-- [ ] `analyticsProvider`가 전역에서 참조 가능
-- [ ] flutter analyze 오류 없음
+
+- [x] 앱 실행 시 Firebase 초기화 오류 없음
+- [x] `analyticsProvider`가 전역에서 참조 가능
+- [x] flutter analyze 오류 없음
 
 **커밋 메시지 제안:** `feat: Firebase Analytics 초기화 및 Provider 추가 (#21)`
 
@@ -92,19 +101,32 @@
 
 **목표:** 주요 화면 진입 시 Analytics 이벤트를 로깅한다. 로깅할 이벤트 목록은 작업 시작 전 확인 필요.
 
-**대상 화면 (작업 시작 전 이벤트명 확정 필요):**
-- `HomeScreen` (탭 화면)
-- `BoxScreen`, `BoxDetailScreen`
-- `LibraryScreen`
-- `ChordDetailScreen`
-- `MyScreen`
+**확정된 이벤트 목록:**
+
+| 종류        | 이벤트         | 파라미터                                | 발생 시점              |
+| ----------- | -------------- | --------------------------------------- | ---------------------- |
+| screen_view | `home`         | —                                       | HomeScreen 진입        |
+| screen_view | `box_list`     | —                                       | BoxScreen 진입         |
+| screen_view | `box_detail`   | —                                       | BoxDetailScreen 진입   |
+| screen_view | `library`      | —                                       | LibraryScreen 진입     |
+| screen_view | `chord_detail` | —                                       | ChordDetailScreen 진입 |
+| screen_view | `my`           | —                                       | MyScreen 진입          |
+| custom      | `box_created`  | `source: "library"` / `"search_detail"` | Box 생성 완료 시       |
 
 **작업 파일:**
-- 위 각 screen 파일 — 화면 진입 시 `analytics.logScreenView()` 호출
+
+- `HomeScreen` — 마운트 시 `home` + `box_list` 로깅, 탭 전환 시 해당 screen_name 로깅 (`box_list` / `library` / `my`)
+  > `BoxScreen`, `LibraryScreen`, `MyScreen`은 `IndexedStack`으로 항상 마운트되어 있으므로 탭 이벤트를 `HomeScreen`에서 일괄 처리
+- `BoxDetailScreen` — 마운트 시 `box_detail` 로깅 (`useEffect`)
+- `ChordDetailScreen` — 마운트 시 `chord_detail` 로깅 (`useEffect`)
+- `chord_save_actions.dart` — `analyticsSource` 파라미터 추가, 새 Box 생성 성공 시 `box_created` 로깅 (`ProviderScope.containerOf`)
+- `LibraryScreen` — `showChordSaveBottomSheet` 호출 시 `analyticsSource: 'library'` 전달
+- `ChordDetailScreen` — `showChordSaveBottomSheet` 호출 시 `analyticsSource: 'search_detail'` 전달
 
 **완료 조건:**
-- [ ] 각 화면 진입 시 Firebase Console → DebugView에서 이벤트 확인
-- [ ] flutter analyze 오류 없음
+
+- [x] 각 화면 진입 시 Firebase Console → 실시간(Realtime)에서 이벤트 확인
+- [x] flutter analyze 오류 없음
 
 **커밋 메시지 제안:** `feat: 주요 화면 Analytics 이벤트 로깅 연결 (#21)`
 
@@ -121,8 +143,8 @@
 
 ## 작업 시작 전 체크리스트
 
-- [ ] docs/architecture/ 문서 숙지 완료
-- [ ] 앱 Bundle ID (iOS) 및 Package name (Android) 확인
-- [ ] Firebase 콘솔 접근 권한 확인
-- [ ] 로깅할 이벤트 목록 사전 확정
-- [ ] 패키지 추가 사용자 승인 완료
+- [x] docs/architecture/ 문서 숙지 완료
+- [x] 앱 Bundle ID (iOS) 및 Package name (Android) 확인
+- [x] Firebase 콘솔 접근 권한 확인
+- [x] 로깅할 이벤트 목록 사전 확정
+- [x] 패키지 추가 사용자 승인 완료
