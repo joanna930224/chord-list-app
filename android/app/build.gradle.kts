@@ -5,6 +5,8 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
     // Add the Google services Gradle plugin
     id("com.google.gms.google-services")
+    // Add the Crashlytics Gradle plugin
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -52,4 +54,6 @@ dependencies {
 
     // Firebase Analytics (no version needed when using BoM)
     implementation("com.google.firebase:firebase-analytics")
+    // Firebase Crashlytics (no version needed when using BoM)
+    implementation("com.google.firebase:firebase-crashlytics")
 }

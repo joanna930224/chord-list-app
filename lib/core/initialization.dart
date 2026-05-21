@@ -3,6 +3,7 @@ import 'package:chord_list_app/shared/exports.dart';
 import 'package:chord_list_app/shared/providers/database_provider.dart';
 import 'package:chord_list_app/shared/utils/logger.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 
 const _seedBoxes = bool.fromEnvironment('SEED_BOXES');
@@ -10,6 +11,12 @@ const _seedBoxes = bool.fromEnvironment('SEED_BOXES');
 Future<ProviderContainer> initialization() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
 
   final container = ProviderContainer();
 
