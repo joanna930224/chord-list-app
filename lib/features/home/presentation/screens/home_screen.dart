@@ -66,6 +66,7 @@ class _HomeView extends HookConsumerWidget {
             currentIndex.value = index;
           },
           type: BottomNavigationBarType.fixed,
+          selectedItemColor: AppColors.brandPurple,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.inventory_2_outlined),
