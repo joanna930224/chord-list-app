@@ -3,6 +3,7 @@
 import 'package:chord_list_app/features/box/presentation/screens/box_detail_screen.dart';
 import 'package:chord_list_app/features/home/presentation/screens/home_screen.dart';
 import 'package:chord_list_app/features/my/presentation/screens/theme_mode_setting_screen.dart';
+import 'package:chord_list_app/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:chord_list_app/features/search/presentation/screens/chord_detail_screen.dart';
 import 'package:chord_list_app/features/splash/presentation/splash_screen.dart';
 import 'package:chord_list_app/shared/template/c_web_view_screen.dart';
@@ -15,6 +16,12 @@ final List<RouteBase> ROUTES = [
     name: SplashScreen.routeName,
     pageBuilder: (context, state) =>
         const NoTransitionPage(child: SplashScreen()),
+  ),
+  GoRoute(
+    path: '/onboarding',
+    name: OnboardingScreen.routeName,
+    pageBuilder: (context, state) =>
+        const NoTransitionPage(child: OnboardingScreen()),
   ),
   GoRoute(
     path: '/home',

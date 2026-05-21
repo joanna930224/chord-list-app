@@ -23,6 +23,7 @@ class PreferenceRepository {
   final _THEME_MODE = 'THEME_MODE';
   final _HAPTIC = 'HAPTIC';
   final _NOTATION_STYLE = 'NOTATION_STYLE';
+  final _ONBOARDING_DONE = 'ONBOARDING_DONE';
 
   /// 테마 모드 조회
   Future<AppThemeMode> findThemeMode() async {
@@ -59,5 +60,17 @@ class PreferenceRepository {
   Future<void> saveNotationStyle(ChordNotationStyle style) async {
     final prefs = await _instance;
     await prefs.setInt(_NOTATION_STYLE, style.index);
+  }
+
+  /// 온보딩 완료 여부 조회
+  Future<bool> findOnboardingDone() async {
+    final prefs = await _instance;
+    return prefs.getBool(_ONBOARDING_DONE) ?? false;
+  }
+
+  /// 온보딩 완료 처리
+  Future<void> saveOnboardingDone() async {
+    final prefs = await _instance;
+    await prefs.setBool(_ONBOARDING_DONE, true);
   }
 }

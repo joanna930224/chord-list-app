@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:chord_list_app/features/home/presentation/screens/home_screen.dart';
+import 'package:chord_list_app/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:chord_list_app/shared/exports.dart';
 import 'package:chord_list_app/shared/hooks/use_mount_effect.dart';
+import 'package:chord_list_app/shared/providers/preference_provider.dart';
 import 'package:chord_list_app/shared/template/c_image.dart';
 
 class SplashScreen extends HookConsumerWidget {
@@ -11,9 +13,11 @@ class SplashScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useEffect(() {
-      final timer = Timer(const Duration(milliseconds: 2500), () {
+      final timer = Timer(const Duration(milliseconds: 2500), () async {
         if (!context.mounted) return;
-        context.goNamed(HomeScreen.routeName);
+        final isDone = await ref.read(preferenceRepositoryProvider).findOnboardingDone();
+        if (!context.mounted) return;
+        context.goNamed(isDone ? HomeScreen.routeName : OnboardingScreen.routeName);
       });
 
       return () => timer.cancel();
