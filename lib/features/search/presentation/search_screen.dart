@@ -4,6 +4,7 @@ import 'package:chord_list_app/features/search/presentation/screens/chord_detail
 import 'package:chord_list_app/features/search/presentation/widgets/chord_group_row_widget.dart';
 import 'package:chord_list_app/shared/exports.dart';
 import 'package:chord_list_app/shared/models/chord_with_positions_model.dart';
+import 'package:chord_list_app/shared/widgets/chord_notation_toggle.dart';
 import 'package:flutter/cupertino.dart';
 
 class SearchScreen extends HookConsumerWidget {
@@ -31,12 +32,22 @@ class SearchScreen extends HookConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 16),
-            Text(
-              'Search',
-              style: context.textTheme.bold20.copyWith(
-                color: context.colorScheme.onSurface,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Search',
+                      style: context.textTheme.bold20.copyWith(
+                        color: context.colorScheme.onSurface,
+                      ),
+                    ),
+                  ),
+                  ChordNotationToggle(),
+                ],
               ),
-            ).ph16,
+            ),
             SizedBox(height: 12),
             TextField(
               controller: controller,

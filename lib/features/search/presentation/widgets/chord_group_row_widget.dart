@@ -1,9 +1,12 @@
 import 'package:chord_list_app/shared/exports.dart';
+import 'package:chord_list_app/shared/extensions/chord_extension.dart';
+import 'package:chord_list_app/shared/models/chord_type.dart';
 import 'package:chord_list_app/shared/models/chord_with_positions_model.dart';
+import 'package:chord_list_app/shared/providers/notation_style_provider.dart';
 import 'package:chord_list_app/shared/template/c_scale_button.dart';
 import 'package:flutter_guitar_chord/flutter_guitar_chord.dart';
 
-class ChordGroupRowWidget extends StatelessWidget {
+class ChordGroupRowWidget extends ConsumerWidget {
   const ChordGroupRowWidget({
     super.key,
     required this.item,
@@ -14,17 +17,32 @@ class ChordGroupRowWidget extends StatelessWidget {
   final VoidCallback onTap;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final notationStyle =
+        ref.watch(notationStyleProvider).value ?? ChordNotationStyle.symbol;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           width: double.infinity,
           decoration: BoxDecoration(color: context.colorScheme.onPrimary),
-          child: Text(
-            item.chord.fullName,
-            style: context.textTheme.semiBold14.copyWith(
-              color: context.colorScheme.onSurface,
+          child: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: item.chord.displayName(notationStyle),
+                  style: context.textTheme.semiBold16.copyWith(
+                    color: AppColors.grey50,
+                  ),
+                ),
+                TextSpan(
+                  text: '  (${item.chord.fullName})',
+                  style: context.textTheme.regular14.copyWith(
+                    color: context.colorScheme.onSurface,
+                  ),
+                ),
+              ],
             ),
           ).ph16,
         ),

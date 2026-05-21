@@ -7,7 +7,6 @@ import 'package:chord_list_app/shared/data/db/app_database.dart';
 import 'package:chord_list_app/shared/exports.dart';
 import 'package:chord_list_app/shared/models/chord_root.dart';
 import 'package:chord_list_app/shared/models/chord_type.dart';
-import 'package:chord_list_app/shared/providers/notation_style_provider.dart';
 import 'package:chord_list_app/shared/utils/chord_save_actions.dart';
 import 'package:chord_list_app/shared/widgets/chord_position_card_widget.dart';
 
@@ -17,25 +16,22 @@ class LibraryScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(libraryViewModelProvider);
-    final notationStyle =
-        ref.watch(notationStyleProvider).value ?? ChordNotationStyle.symbol;
 
     return Scaffold(
       backgroundColor: context.colorScheme.surface,
       body: state.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text(e.toString())),
-        data: (data) => _LibraryBody(data: data, notationStyle: notationStyle),
+        data: (data) => _LibraryBody(data: data),
       ),
     );
   }
 }
 
 class _LibraryBody extends StatelessWidget {
-  const _LibraryBody({required this.data, required this.notationStyle});
+  const _LibraryBody({required this.data});
 
   final LibraryState data;
-  final ChordNotationStyle notationStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +57,7 @@ class _LibraryBody extends StatelessWidget {
                     ),
                   ),
                 ),
-                ChordNotationToggle(current: notationStyle),
+                ChordNotationToggle(),
               ],
             ),
           ),
