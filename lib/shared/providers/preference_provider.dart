@@ -24,6 +24,7 @@ class PreferenceRepository {
   final _HAPTIC = 'HAPTIC';
   final _NOTATION_STYLE = 'NOTATION_STYLE';
   final _ONBOARDING_DONE = 'ONBOARDING_DONE';
+  final _BOX_DETAIL_GUIDE_DONE = 'BOX_DETAIL_GUIDE_DONE';
 
   /// 테마 모드 조회
   Future<AppThemeMode> findThemeMode() async {
@@ -72,5 +73,17 @@ class PreferenceRepository {
   Future<void> saveOnboardingDone() async {
     final prefs = await _instance;
     await prefs.setBool(_ONBOARDING_DONE, true);
+  }
+
+  /// Box Detail 코치마크 노출 완료 여부 조회
+  Future<bool> findBoxDetailGuideDone() async {
+    final prefs = await _instance;
+    return prefs.getBool(_BOX_DETAIL_GUIDE_DONE) ?? false;
+  }
+
+  /// Box Detail 코치마크 다시 보지 않기 처리
+  Future<void> saveBoxDetailGuideDone() async {
+    final prefs = await _instance;
+    await prefs.setBool(_BOX_DETAIL_GUIDE_DONE, true);
   }
 }

@@ -2,11 +2,13 @@ import 'dart:math' show pi;
 
 import 'package:chord_list_app/features/box/application/box_detail_state.dart';
 import 'package:chord_list_app/features/box/application/box_detail_view_model_provider.dart';
+import 'package:chord_list_app/features/box/presentation/widgets/box_detail_coach_mark_widget.dart';
 import 'package:chord_list_app/features/box/presentation/widgets/box_edit_dialog.dart';
 import 'package:chord_list_app/shared/exports.dart';
 import 'package:chord_list_app/shared/models/box_chord_detail_model.dart';
 import 'package:chord_list_app/shared/providers/analytics_provider.dart';
 import 'package:chord_list_app/shared/providers/database_provider.dart';
+import 'package:chord_list_app/shared/providers/preference_provider.dart';
 import 'package:chord_list_app/shared/template/c_dialog.dart';
 import 'package:chord_list_app/shared/template/c_scaffold.dart';
 import 'package:chord_list_app/shared/template/c_toast.dart';
@@ -28,13 +30,23 @@ class BoxDetailScreen extends HookConsumerWidget {
     final isEditing = useState(false);
     final editingDetails = useState<List<BoxChordDetailModel>>([]);
     final isSaving = useState(false);
+    final isGuideVisible = useState(false);
 
     useEffect(() {
       ref.read(analyticsProvider).logScreenView('box_detail');
       return null;
     }, const []);
 
-    return FutureValueWidget(
+    useEffect(() {
+      ref.read(preferenceRepositoryProvider).findBoxDetailGuideDone().then((isDone) {
+        if (!isDone) isGuideVisible.value = true;
+      });
+      return null;
+    }, const []);
+
+    return Stack(
+      children: [
+        FutureValueWidget(
       ref.watch(boxDetailViewModelProvider(boxId).future),
       data: (data) {
         final BoxDetailState(box: box, chordDetails: chordDetails) = data;
@@ -234,6 +246,16 @@ class BoxDetailScreen extends HookConsumerWidget {
           ),
         );
       },
+        ),
+        if (isGuideVisible.value)
+          BoxDetailCoachMarkWidget(
+            onConfirm: () => isGuideVisible.value = false,
+            onDismiss: () async {
+              await ref.read(preferenceRepositoryProvider).saveBoxDetailGuideDone();
+              isGuideVisible.value = false;
+            },
+          ),
+      ],
     );
   }
 }
