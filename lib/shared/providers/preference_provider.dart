@@ -28,7 +28,7 @@ class PreferenceRepository {
   Future<AppThemeMode> findThemeMode() async {
     final prefs = await _instance;
 
-    return AppThemeMode.values[prefs.getInt(_THEME_MODE) ?? 0];
+    return AppThemeMode.values[prefs.getInt(_THEME_MODE) ?? 2];
   }
 
   /// 테마 모드 설정
