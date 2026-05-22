@@ -40,6 +40,13 @@ class HapticService {
     await _executeHaptic(() => HapticFeedback.heavyImpact());
   }
 
+  /// 가장 강한 햅틱 피드백
+  ///
+  /// 꾹 누르기 등 묵직한 피드백이 필요할 때 사용
+  Future<void> vibrate() async {
+    await _executeHaptic(() => HapticFeedback.vibrate());
+  }
+
   /// 선택 햅틱 피드백
   ///
   /// 드롭다운, 피커 등의 선택 변경에 사용
