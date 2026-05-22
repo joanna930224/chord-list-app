@@ -33,7 +33,7 @@ class ChordGroupRowWidget extends ConsumerWidget {
                 TextSpan(
                   text: item.chord.displayName(notationStyle),
                   style: context.textTheme.semiBold16.copyWith(
-                    color: AppColors.grey50,
+                    color: context.colorScheme.primary,
                   ),
                 ),
                 TextSpan(
