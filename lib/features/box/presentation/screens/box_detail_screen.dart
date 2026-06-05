@@ -2,12 +2,12 @@ import 'dart:math' show pi;
 
 import 'package:chord_list_app/features/box/application/box_detail_state.dart';
 import 'package:chord_list_app/features/box/application/box_detail_view_model_provider.dart';
+import 'package:chord_list_app/features/box/presentation/screens/custom_chord_editor_screen.dart';
 import 'package:chord_list_app/features/box/presentation/widgets/box_detail_coach_mark_widget.dart';
 import 'package:chord_list_app/features/box/presentation/widgets/box_edit_dialog.dart';
 import 'package:chord_list_app/shared/exports.dart';
 import 'package:chord_list_app/shared/models/box_chord_detail_model.dart';
 import 'package:chord_list_app/shared/providers/analytics_provider.dart';
-import 'package:chord_list_app/shared/providers/database_provider.dart';
 import 'package:chord_list_app/shared/providers/haptic_provider.dart';
 import 'package:chord_list_app/shared/providers/preference_provider.dart';
 import 'package:chord_list_app/shared/template/c_dialog.dart';
@@ -88,8 +88,9 @@ class BoxDetailScreen extends HookConsumerWidget {
               );
               if (confirmed != true || !context.mounted) return;
               try {
-                final db = ref.read(appDatabaseProvider);
-                await db.boxDao.deleteById(boxId);
+                await ref
+                    .read(boxDetailViewModelProvider(boxId).notifier)
+                    .deleteBox();
                 if (context.mounted) context.pop();
               } catch (_) {
                 if (context.mounted) CToast.show(context, '오류가 발생하였습니다.');
@@ -98,13 +99,14 @@ class BoxDetailScreen extends HookConsumerWidget {
 
             Future<void> onSaveTap() async {
               isSaving.value = true;
-              final db = ref.read(appDatabaseProvider);
               try {
-                await db.boxChordDao.saveEditChanges(
-                  boxId,
-                  editingDetails.value.map((d) => d.position.id).toList(),
-                );
-                if (context.mounted) isEditing.value = false;
+                await ref
+                    .read(boxDetailViewModelProvider(boxId).notifier)
+                    .saveEditing(editingDetails.value);
+                if (context.mounted) {
+                  isSaving.value = false;
+                  isEditing.value = false;
+                }
               } catch (_) {
                 if (context.mounted) {
                   isSaving.value = false;
@@ -144,6 +146,18 @@ class BoxDetailScreen extends HookConsumerWidget {
                         ],
                       ),
                     ],
+              floatingActionButton: isEditing.value
+                  ? null
+                  : FloatingActionButton(
+                      onPressed: () => context.pushNamed(
+                      CustomChordEditorScreen.routeName,
+                      pathParameters: {'id': boxId.toString()},
+                    ),
+                      backgroundColor: AppColors.brandPurple,
+                      foregroundColor: Colors.white,
+                      shape: const CircleBorder(),
+                      child: const Icon(Icons.add),
+                    ),
               body: CustomScrollView(
                 slivers: [
                   SliverToBoxAdapter(
@@ -234,7 +248,7 @@ class BoxDetailScreen extends HookConsumerWidget {
                           final detail = chordDetails[index];
                           return GestureDetector(
                             onLongPress: () {
-                              ref.read(hapticProvider).vibrate();
+                              ref.read(hapticProvider).longPress();
                               editingDetails.value = List.from(chordDetails);
                               isEditing.value = true;
                             },

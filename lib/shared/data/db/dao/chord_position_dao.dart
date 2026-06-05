@@ -20,6 +20,10 @@ class ChordPositionDao extends DatabaseAccessor<AppDatabase>
   Future<int> insertPosition(ChordPositionsCompanion companion) =>
       into(chordPositions).insert(companion);
 
+  /// 운지법 단건 삭제
+  Future<int> deleteById(int positionId) =>
+      (delete(chordPositions)..where((t) => t.id.equals(positionId))).go();
+
   /// 특정 코드의 운지법 전체 삭제 (chord 삭제 시 수동 호출)
   Future<int> deleteByChordId(int chordId) =>
       (delete(chordPositions)..where((t) => t.chordId.equals(chordId))).go();

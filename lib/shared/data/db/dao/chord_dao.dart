@@ -19,18 +19,30 @@ class ChordDao extends DatabaseAccessor<AppDatabase> with _$ChordDaoMixin {
   Future<List<Chord>> findByType(String type) =>
       (select(chords)..where((t) => t.type.equals(type))).get();
 
-  /// name 또는 fullName으로 검색
+  /// name 또는 fullName으로 검색 (커스텀 코드 제외)
   Future<List<Chord>> search(String keyword) => (select(chords)
         ..where(
           (t) =>
-              t.name.contains(keyword) |
-              t.fullName.contains(keyword),
+              t.isCustom.equals(false) &
+              (t.name.contains(keyword) | t.fullName.contains(keyword)),
         ))
       .get();
 
   /// 단일 코드 조회
   Future<Chord?> findById(int id) =>
       (select(chords)..where((t) => t.id.equals(id))).getSingleOrNull();
+
+  /// 커스텀 코드 삽입
+  Future<int> insertCustomChord(String name) => into(chords).insert(
+    ChordsCompanion.insert(
+      name: name,
+      fullName: name,
+      root: 'custom',
+      type: 'custom',
+      difficulty: 'custom',
+      isCustom: const Value(true),
+    ),
+  );
 
   /// 코드 삽입
   Future<int> insertChord(ChordsCompanion companion) =>

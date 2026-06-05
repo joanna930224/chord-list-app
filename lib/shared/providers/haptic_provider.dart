@@ -1,5 +1,7 @@
 import 'package:chord_list_app/shared/exports.dart';
 import 'package:chord_list_app/shared/providers/preference_provider.dart';
+import 'package:flutter/foundation.dart'
+    show defaultTargetPlatform, TargetPlatform;
 import 'package:flutter/services.dart';
 
 /// 햅틱 피드백 프로바이더
@@ -52,6 +54,17 @@ class HapticService {
   /// 드롭다운, 피커 등의 선택 변경에 사용
   Future<void> selection() async {
     await _executeHaptic(() => HapticFeedback.selectionClick());
+  }
+
+  /// 꾹 누르기용 햅틱 피드백
+  ///
+  /// iOS: heavyImpact, Android: vibrate
+  Future<void> longPress() async {
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      await vibrate();
+    } else {
+      await heavy();
+    }
   }
 
   /// 범용 햅틱 피드백

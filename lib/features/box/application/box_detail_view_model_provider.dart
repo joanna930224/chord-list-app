@@ -27,10 +27,9 @@ class BoxDetailViewModelNotifier extends AsyncNotifier<BoxDetailState> {
     final box = await db.boxDao.findById(_boxId);
     if (box == null) throw Exception('Box not found: $_boxId');
 
-    _subscribe(db, _boxId);
-
     final initialDetails =
         await db.boxChordDao.watchByBoxIdWithDetails(_boxId).first;
+    _subscribe(db, _boxId);
     return BoxDetailState(
       box: ChordBoxModel.fromData(box),
       chordDetails: initialDetails,
@@ -42,6 +41,53 @@ class BoxDetailViewModelNotifier extends AsyncNotifier<BoxDetailState> {
     final box = await db.boxDao.findById(_boxId);
     if (box == null || !state.hasValue) return;
     state = AsyncData(state.value!.copyWith(box: ChordBoxModel.fromData(box)));
+  }
+
+  Future<void> saveCustomChord({
+    required String name,
+    required String frets,
+    required String fingers,
+    required int baseFret,
+  }) async {
+    final db = ref.read(appDatabaseProvider);
+    await db.transaction(() async {
+      final chordId = await db.chordDao.insertCustomChord(name);
+      final positionId = await db.chordPositionDao.insertPosition(
+        ChordPositionsCompanion.insert(
+          chordId: chordId,
+          baseFret: baseFret,
+          frets: frets,
+          fingers: fingers,
+          positionIndex: 0,
+        ),
+      );
+      await db.boxChordDao.insertBoxChord(_boxId, positionId);
+    });
+  }
+
+  /// 편집 모드 저장: 커스텀 코드 orphan 정리 + BoxChord 삭제/순서 저장
+  Future<void> saveEditing(List<BoxChordDetailModel> remainingDetails) async {
+    final db = ref.read(appDatabaseProvider);
+    final currentDetails = state.value?.chordDetails ?? [];
+    final remainingIds = remainingDetails.map((d) => d.position.id).toSet();
+    final removedDetails =
+        currentDetails.where((d) => !remainingIds.contains(d.position.id));
+
+    await db.transaction(() async {
+      for (final detail in removedDetails.where((d) => d.chord.isCustom)) {
+        await db.chordPositionDao.deleteById(detail.position.id);
+        await db.chordDao.deleteById(detail.chord.id);
+      }
+      await db.boxChordDao.saveEditChanges(
+        _boxId,
+        remainingDetails.map((d) => d.position.id).toList(),
+      );
+    });
+  }
+
+  Future<void> deleteBox() async {
+    final db = ref.read(appDatabaseProvider);
+    await db.boxDao.deleteById(_boxId);
   }
 
   void _subscribe(AppDatabase db, int boxId) {

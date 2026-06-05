@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:chord_list_app/features/box/presentation/screens/box_detail_screen.dart';
+import 'package:chord_list_app/features/box/presentation/screens/custom_chord_editor_screen.dart';
 import 'package:chord_list_app/features/home/presentation/screens/home_screen.dart';
 import 'package:chord_list_app/features/my/presentation/screens/theme_mode_setting_screen.dart';
 import 'package:chord_list_app/features/onboarding/presentation/screens/onboarding_screen.dart';
@@ -39,6 +40,12 @@ final List<RouteBase> ROUTES = [
     name: BoxDetailScreen.routeName,
     builder: (context, state) =>
         BoxDetailScreen(boxId: int.parse(state.pathParameters['id']!)),
+  ),
+  GoRoute(
+    path: '/box/:id/custom-chord',
+    name: CustomChordEditorScreen.routeName,
+    builder: (context, state) =>
+        CustomChordEditorScreen(boxId: int.parse(state.pathParameters['id']!)),
   ),
   GoRoute(
     path: '/chord/:id',

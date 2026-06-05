@@ -36,7 +36,9 @@ class BoxViewModelNotifier extends AsyncNotifier<BoxState> {
     _subscription = db.boxDao.watchAll(sortType).listen((data) {
       if (state.hasValue) {
         state = AsyncData(
-          state.value!.copyWith(boxes: data.map<ChordBoxModel>(ChordBoxModel.fromData).toList()),
+          state.value!.copyWith(
+            boxes: data.map<ChordBoxModel>(ChordBoxModel.fromData).toList(),
+          ),
         );
       }
     });

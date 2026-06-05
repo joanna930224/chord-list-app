@@ -33,7 +33,7 @@ class ChordPositionCardWidget extends ConsumerWidget {
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: context.colorScheme.outline, width: 0.5),
         ),
-        padding: const EdgeInsets.fromLTRB(4, 4, 0, 2),
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 4),
         child: FlutterGuitarChord(
           frets: position.frets,
           fingers: position.fingers,
