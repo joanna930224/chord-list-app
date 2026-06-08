@@ -7,7 +7,7 @@ class GetAllChordsWithPositionsUseCase {
   final AppDatabase _db;
 
   Future<List<ChordWithPositionsModel>> call() async {
-    final chords = await _db.chordDao.findAll();
+    final chords = await _db.chordDao.findAllStandard();
     final result = <ChordWithPositionsModel>[];
     for (final chord in chords) {
       final positions = await _db.chordPositionDao.findByChordId(chord.id);

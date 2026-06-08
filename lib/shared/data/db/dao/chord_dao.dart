@@ -8,8 +8,12 @@ part 'chord_dao.g.dart';
 class ChordDao extends DatabaseAccessor<AppDatabase> with _$ChordDaoMixin {
   ChordDao(super.db);
 
-  /// 전체 코드 목록 조회
+  /// 전체 코드 목록 조회 (앱 최초 설치했을때 1회 사용)
   Future<List<Chord>> findAll() => select(chords).get();
+
+  /// 기본 제공 코드만 조회 (커스텀 제외)
+  Future<List<Chord>> findAllStandard() =>
+      (select(chords)..where((t) => t.isCustom.equals(false))).get();
 
   /// root 음으로 필터링
   Future<List<Chord>> findByRoot(String root) =>
@@ -20,13 +24,13 @@ class ChordDao extends DatabaseAccessor<AppDatabase> with _$ChordDaoMixin {
       (select(chords)..where((t) => t.type.equals(type))).get();
 
   /// name 또는 fullName으로 검색 (커스텀 코드 제외)
-  Future<List<Chord>> search(String keyword) => (select(chords)
-        ..where(
-          (t) =>
-              t.isCustom.equals(false) &
-              (t.name.contains(keyword) | t.fullName.contains(keyword)),
-        ))
-      .get();
+  Future<List<Chord>> search(String keyword) =>
+      (select(chords)..where(
+            (t) =>
+                t.isCustom.equals(false) &
+                (t.name.contains(keyword) | t.fullName.contains(keyword)),
+          ))
+          .get();
 
   /// 단일 코드 조회
   Future<Chord?> findById(int id) =>
