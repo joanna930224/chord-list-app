@@ -14,7 +14,7 @@ class OnboardingScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final pageController = usePageController();
     final currentPage = useState(0);
-    const total = 3;
+    const total = 4;
 
     useMountEffect(() {
       SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -61,6 +61,13 @@ class OnboardingScreen extends HookConsumerWidget {
                         currentPage: currentPage.value,
                         total: total,
                       ),
+                      OnboardingPage(
+                        imagePath: 'assets/images/onboarding_4.webp',
+                        title: '커스텀 코드',
+                        description: '내 손에 맞는 운지법으로\n직접 만들어 보세요.',
+                        currentPage: currentPage.value,
+                        total: total,
+                      ),
                     ],
                   ),
                 ),
@@ -80,7 +87,9 @@ class OnboardingScreen extends HookConsumerWidget {
                           )
                         : CElevatedButton(
                             onPressed: () async {
-                              await ref.read(preferenceRepositoryProvider).saveOnboardingDone();
+                              await ref
+                                  .read(preferenceRepositoryProvider)
+                                  .saveOnboardingDone();
                               if (!context.mounted) return;
                               context.goNamed(HomeScreen.routeName);
                             },
