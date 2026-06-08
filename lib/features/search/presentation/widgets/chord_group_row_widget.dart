@@ -74,7 +74,9 @@ class ChordGroupRowWidget extends ConsumerWidget {
                           chordName: item.chord.name,
                           stringColor: context.colorScheme.primary,
                           barColor: context.colorScheme.primary,
-                          firstFrameColor: AppColors.brandPurple,
+                          firstFrameColor: position.baseFret == 1
+                              ? AppColors.brandPurple
+                              : context.colorScheme.primary,
                           tabBackgroundColor: AppColors.brandPurple,
                           tabForegroundColor: Colors.transparent,
                           labelColor: context.colorScheme.secondary,
