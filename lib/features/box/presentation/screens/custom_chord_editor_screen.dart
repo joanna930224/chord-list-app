@@ -69,8 +69,8 @@ class CustomChordEditorScreen extends HookConsumerWidget {
             : Column(
                 children: [
                   const SizedBox(height: 16),
-                  Expanded(child: const _FretboardControls().ph20),
-                  const _ChordPreview(),
+                  Expanded(flex: 11, child: const _FretboardControls().ph20),
+                  const Expanded(flex: 9, child: _ChordPreview()),
                 ],
               ),
       ),
@@ -112,7 +112,7 @@ class _FretboardControls extends ConsumerWidget {
                 ),
                 style: context.textTheme.regular16,
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 28),
               FretboardWidget(
                 frets: state.frets,
                 baseFret: state.baseFret,
@@ -144,17 +144,16 @@ class _ChordPreview extends ConsumerWidget {
 
     return ColoredBox(
       color: context.colorScheme.onPrimary,
-      child: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 16),
-            Text('미리보기', style: context.textTheme.semiBold14).ph20,
-            const SizedBox(height: 16),
-            Center(
-              child: SizedBox(
-                width: 210,
-                height: 210,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 20),
+          Text('미리보기', style: context.textTheme.semiBold14).ph20,
+          const SizedBox(height: 20),
+          Expanded(
+            child: Center(
+              child: AspectRatio(
+                aspectRatio: 1,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(10, 0, 0, 4),
                   child: FlutterGuitarChord(
@@ -175,9 +174,9 @@ class _ChordPreview extends ConsumerWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
-          ],
-        ),
+          ),
+          const SizedBox(height: 40),
+        ],
       ),
     );
   }

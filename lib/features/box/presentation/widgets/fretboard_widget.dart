@@ -1,7 +1,7 @@
 import 'package:chord_list_app/shared/exports.dart';
 
 const int _stringCount = 6;
-const int _fretCount = 5;
+const int _fretCount = 4;
 const _fingerOptions = ['T', '1', '2', '3', '4'];
 const _loopMultiplier = 500;
 const double _fretRowHeight = 44.0;
