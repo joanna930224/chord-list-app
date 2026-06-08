@@ -44,31 +44,36 @@ class CustomChordEditorScreen extends HookConsumerWidget {
 
     return CScaffold(
       title: const Text('Custom'),
+      resizeToAvoidBottomInset: false,
       actions: [
         TextButton(
           onPressed: state.isValid && !isSaving.value ? onSave : null,
           child: const Text('저장'),
         ),
       ],
-      body: isLandscape
-          ? Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: const _FretboardControls().ph20,
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        behavior: HitTestBehavior.translucent,
+        child: isLandscape
+            ? Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: const _FretboardControls().ph20,
+                    ),
                   ),
-                ),
-                const Expanded(child: _ChordPreview()),
-              ],
-            )
-          : Column(
-              children: [
-                const SizedBox(height: 16),
-                Expanded(child: const _FretboardControls().ph20),
-                const _ChordPreview(),
-              ],
-            ),
+                  const Expanded(child: _ChordPreview()),
+                ],
+              )
+            : Column(
+                children: [
+                  const SizedBox(height: 16),
+                  Expanded(child: const _FretboardControls().ph20),
+                  const _ChordPreview(),
+                ],
+              ),
+      ),
     );
   }
 }

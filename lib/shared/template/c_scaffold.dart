@@ -16,6 +16,7 @@ class CScaffold extends StatelessWidget {
     this.bottomSheet,
     this.bottomNavigationBar,
     this.onWillPop,
+    this.resizeToAvoidBottomInset,
   });
 
   final Widget? title;
@@ -28,6 +29,7 @@ class CScaffold extends StatelessWidget {
   final Widget? bottomSheet;
   final Widget? bottomNavigationBar;
   final Future<bool> Function()? onWillPop;
+  final bool? resizeToAvoidBottomInset;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +37,7 @@ class CScaffold extends StatelessWidget {
       backgroundColor: backgroundColor,
       bottomSheet: bottomSheet,
       bottomNavigationBar: bottomNavigationBar,
+      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       appBar: AppBar(
         centerTitle: true,
         title: title,
