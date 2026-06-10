@@ -1,8 +1,8 @@
 name: chord_list_app
-description: 'A new Flutter project.'
+description: 'ChordBox app'
 publish_to: 'none'
 
-version: 1.0.0+1
+version: 1.0.0+3
 
 environment:
   sdk: ^3.10.0
@@ -15,12 +15,51 @@ dependencies:
   flutter_riverpod: ^3.3.1
   hooks_riverpod: ^3.3.1
   flutter_hooks: ^0.21.3+1
+  shared_preferences: ^2.5.5
+  flutter_svg: ^2.2.4
+  lottie: ^3.3.2
+  cached_network_image: ^3.4.1
+  drift: ^2.31.0
+  drift_flutter: ^0.2.8
+  path_provider: ^2.1.5
+  guitar_chord_library: ^0.0.4
+  logger: ^2.7.0
+  intl: ^0.20.2
+  flutter_guitar_chord: ^0.0.3
+  copy_with_extension: ^14.0.0
+  reorderables: ^0.6.0
+  package_info_plus: ^10.1.0
+  webview_flutter: ^4.13.1
+  firebase_core: ^3.13.1
+  firebase_analytics: ^11.4.5
+  firebase_crashlytics: ^4.3.10
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
+  drift_dev: ^2.31.0
+  build_runner: ^2.13.1
+  copy_with_extension_gen: ^14.0.0
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/icons/
+    - assets/images/
+    - assets/launcher_icon/
+
+  fonts:
+    - family: Pretendard
+      fonts:
+        - asset: assets/fonts/Pretendard/Pretendard-Regular.otf
+          weight: 400
+        - asset: assets/fonts/Pretendard/Pretendard-Medium.otf
+          weight: 500
+        - asset: assets/fonts/Pretendard/Pretendard-SemiBold.otf
+          weight: 600
+        - asset: assets/fonts/Pretendard/Pretendard-Bold.otf
+          weight: 700

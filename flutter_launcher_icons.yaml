@@ -1,0 +1,11 @@
+flutter_launcher_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path_android: 'assets/launcher_icon/android/launcher-icon-prod.png'
+  image_path_ios: 'assets/launcher_icon/ios/launcher-icon-prod.png'
+  image_path_ios_dark_transparent: 'assets/launcher_icon/ios/launcher-icon-dark.png'
+  image_path_ios_tinted_grayscale: 'assets/launcher_icon/ios/launcher-icon-tinted.png'
+  adaptive_icon_background: '#5A4FCF'
+  adaptive_icon_foreground: 'assets/launcher_icon/android/launcher-icon-prod.png'
+  adaptive_icon_round: 'assets/launcher_icon/android/launcher-icon-round.png'
